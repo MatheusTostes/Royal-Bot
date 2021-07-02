@@ -1,18 +1,13 @@
 print("========================== RP Bot ==========================")
 
 import pandas as pd
-import numpy as np
-from pandas import DataFrame
 import re
-from urllib.request import Request, urlopen
 import time
 import gspread
 from google.oauth2 import service_account
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 
 pd.set_option('display.max_rows', 350)
 pd.set_option('display.max_columns', 100)
@@ -245,7 +240,6 @@ def adicionarAtendido(planilhaAtendidos, i):
         print("Não foi possivel adicionar o status de atendido ao cliente, tentando novamente!")
         adicionarAtendido(planilhaAtendidos, i)
 
-
 def application():
     print("Iniciando o bot")
     planilhas = receberPlanilhas(planilha)
@@ -327,7 +321,6 @@ def application():
             print("Aguardando novos clientes")
     time.sleep(30)
     application()    
-
 
 login = input("Usuario vendedor: ")
 senha = input("Senha vendedor: ")
