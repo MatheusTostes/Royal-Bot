@@ -165,30 +165,33 @@ def criarTesteBlessed():
     print("Criando teste")
     try:
         driver.find_element_by_xpath("/html/body/div[2]/div/nav/div/div[1]/ul/li[12]/a").click();
+        print('---menu lateral aberto---')
         time.sleep(2)
         driver.find_element_by_xpath("/html/body/div[2]/div/nav/div/div[1]/ul/li[12]/ul/li[6]/a").click();
-
+        print('---pagina de teste aberto---')
         time.sleep(5)
         try: 
             dadosNovoTeste = dadosBlessed()
+            print(dadosNovoTeste)
+
+            usuario = re.findall(r'acesso:\nUsuario: (.+?)\nSenha: ', dadosNovoTeste)
+            senha = re.findall(r'\nSenha: (.+?)\nLista M3U: ', dadosNovoTeste)
+            listaM3u = re.findall(r'\nLista M3U: (.+?)\nDNS STB ', dadosNovoTeste)
+            DNS = re.findall(r'\nDNS STB (.+?)\nDNS PRINCIPAL', dadosNovoTeste)
+            DNSprincipal = re.findall(r'\nDNS PRINCIPAL\n(.+?)\nSSIPTV:', dadosNovoTeste)
+            SSIPTV = re.findall(r'\nSSIPTV:(.+?)\nWeb player:', dadosNovoTeste)
+            webPlayer = re.findall(r'\nWeb player:\n(.+?)/\n\nLink epg:', dadosNovoTeste)
+            epg = re.findall(r'/\n\nLink epg:(.+?)\n\n', dadosNovoTeste)
+            vcapp = re.findall(r'\n\n(.+?)\nObrigado Por Ser Nosso Cliente', dadosNovoTeste)
+            
+            driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/button[3]").click();
         except:
             time.sleep(3)
             dadosNovoTeste = dadosBlessed()    
     
-        
-        usuario = re.findall(r'acesso:\nUsuario: (.+?)\nSenha: ', dadosNovoTeste)
-        senha = re.findall(r'\nSenha: (.+?)\nLista M3U: ', dadosNovoTeste)
-        listaM3u = re.findall(r'\nLista M3U: (.+?)\nDNS STB ', dadosNovoTeste)
-        DNS = re.findall(r'\nDNS STB (.+?)\nDNS PRINCIPAL', dadosNovoTeste)
-        DNSprincipal = re.findall(r'\nDNS PRINCIPAL\n(.+?)\nSSIPTV:', dadosNovoTeste)
-        SSIPTV = re.findall(r'\nSSIPTV:(.+?)\nWeb player:', dadosNovoTeste)
-        webPlayer = re.findall(r'\nWeb player:\n(.+?)/\n\nLink epg:', dadosNovoTeste)
-        epg = re.findall(r'/\n\nLink epg:(.+?)\n\n', dadosNovoTeste)
-        vcapp = re.findall(r'\n\n(.+?)\nObrigado Por Ser Nosso Cliente', dadosNovoTeste)
-        
-        driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/button[3]").click();
     except:
         print("Não foi possível criar teste, tentando novamente!")
+        #driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/button[3]").click();
         time.sleep(3)
         criarTesteBlessed()
     return usuario, senha, listaM3u, DNS, DNSprincipal, SSIPTV, webPlayer, epg, vcapp
@@ -240,7 +243,11 @@ def adicionarAtendido(planilhaAtendidos, i):
         print("Não foi possivel adicionar o status de atendido ao cliente, tentando novamente!")
         adicionarAtendido(planilhaAtendidos, i)
 
-def application():
+def definirUltCliente(ultimoCliente, i):
+    ultimoCliente = i
+    return ultimoCliente
+
+def application(ultimoCliente):
     print("Iniciando o bot")
     planilhas = receberPlanilhas(planilha)
     dfClientes = planilhas[0]
@@ -248,17 +255,21 @@ def application():
     dfVendedores = planilhas[2]
     planilhaAtendidos =  planilhas[3]
     print("Buscando clientes...")
-    for i in range(0, len(dfClientes)): 
-        print("Cliente: ", i)              
-        if i not in listaAtendidos:
+    for i in range(ultimoCliente, len(dfClientes)):        
+        if i not in listaAtendidos:   
+            ultimoCliente = definirUltCliente(ultimoCliente, i)
+            print("Cliente: ", i)       
             adicionarAtendido(planilhaAtendidos, i)
             textoCliente = criarTesteBlessed()
+            print('textoCliente: ', textoCliente)
+            print("--criado texto cliente")
             telefone = dfClientes.iloc[i][numeroWhats]
 
             if dfClientes.iloc[i][colAparelho] == 'Samsung "comum"':                       
                 nome = dfClientes.iloc[i]["Nome"]
                 aplicativo = 'STB'
                 print(nome, aplicativo)
+                
                 mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. %0a Aproveite o teste e fique à vontade para nos contatar em caso de dúvidas. %0a Usuário: ' + textoCliente[0][0] + '%0a Senha: ' + textoCliente[1][0] + '%0a dns: 51.222.117.4'                
                 mensagem = mensagem.replace( " ","+" )
                 try:
@@ -319,8 +330,9 @@ def application():
                 
             time.sleep(2)
             print("Aguardando novos clientes")
+    
     time.sleep(30)
-    application()    
+    application(ultimoCliente)    
 
 login = input("Usuario vendedor: ")
 senha = input("Senha vendedor: ")
@@ -336,9 +348,10 @@ if validar[0] == "valido":
         wpAberto = input("APERTE 'ENTER' CASO O WHATS APP WEB JÁ ESTEJA NA TELA DE CONVERSAS")
         colAparelho = "Utiliza Smart TV, Chromecast ou TV Box?"
         numeroWhats = "Número de whatsapp (com DDD)"
-        application()
+        ultimoCliente = 0
+        application(ultimoCliente)
     else:
-        print('sua assinatura expirou')
+        print(validar[0])
 else:
     print("Usuário ou senha inválido")
 
