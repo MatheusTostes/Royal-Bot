@@ -1,0 +1,16 @@
+
+*.pyc
+*.spec
+*.toc
+*.manifest
+*.zip
+*.pyz
+*.txt
+*.html
+*.pkg
+build/
+data/
+py_cache/
+dist/
+appdebug.py
+geckodriver.log

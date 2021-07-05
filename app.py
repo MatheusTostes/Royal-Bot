@@ -112,7 +112,7 @@ def abrirBlessed():
 
         option = Options()
         option.headless = True
-        driver = webdriver.Firefox(executable_path=pathGecko) 
+        driver = webdriver.Firefox(executable_path=pathGecko, options=option) 
         driver.maximize_window()
         driver.get(blessed)
         time.sleep(3)
@@ -142,7 +142,7 @@ def abrirWhats():
 
         driver2 = webdriver.Chrome(pathChrome, options=options)
         driver2.get("https://web.whatsapp.com/")
-        driver2.maximize_window()
+        #driver2.maximize_window()
     except:
         print("Não foi possível abrir o WhatsApp Web, tentando novamente!")
         time.sleep(3)
@@ -183,8 +183,15 @@ def criarTesteBlessed():
             webPlayer = re.findall(r'\nWeb player:\n(.+?)/\n\nLink epg:', dadosNovoTeste)
             epg = re.findall(r'/\n\nLink epg:(.+?)\n\n', dadosNovoTeste)
             vcapp = re.findall(r'\n\n(.+?)\nObrigado Por Ser Nosso Cliente', dadosNovoTeste)
-            
+
             driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/button[3]").click();
+
+            if len(usuario) < 1:
+                print(usuario)
+                print("Dados não obtidos")
+                print("DADOS DO TESTE: ", dadosNovoTeste)
+                time.sleep(2)
+                criarTesteBlessed() 
         except:
             time.sleep(3)
             dadosNovoTeste = dadosBlessed()    
