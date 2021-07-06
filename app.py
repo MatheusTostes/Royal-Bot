@@ -272,69 +272,55 @@ def application(ultimoCliente):
             print("--criado texto cliente")
             telefone = dfClientes.iloc[i][numeroWhats]
 
-            if dfClientes.iloc[i][colAparelho] == 'Samsung "comum"':                       
+            if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung 4K':                       
+                nome = dfClientes.iloc[i]["Nome"]
+                aplicativo = 'Duplex Play'
+                print(nome, aplicativo)
+                
+                mensagem = mensagem.replace( " ","+" )
+                try:
+                    mensagemPadrao(i, mensagem, telefone)
+                except:
+                    print("Erro ao enviar mensagem Padrao")
+            
+            if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung antiga':                       
                 nome = dfClientes.iloc[i]["Nome"]
                 aplicativo = 'STB'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. %0a Aproveite o teste e fique à vontade para nos contatar em caso de dúvidas. %0a Usuário: ' + textoCliente[0][0] + '%0a Senha: ' + textoCliente[1][0] + '%0a dns: 51.222.117.4'                
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo antigo* é o *Smart STB*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 51.222.117.4_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
                 except:
                     print("Erro ao enviar mensagem Padrao")
-            if dfClientes.iloc[i][colAparelho] == 'LG "comum"':                       
+            
+            if dfClientes.iloc[i][colAparelho] == 'Smart - LG 4K' or dfClientes.iloc[i][colAparelho] == 'Smart - LG antiga':                       
                 nome = dfClientes.iloc[i]["Nome"]
-                aplicativo = 'Smarters Players'
+                aplicativo = 'Smarters ou Duplex'
                 print(nome, aplicativo)
-                mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. %0a Aproveite o teste e fique à vontade para nos contatar em caso de dúvidas. %0a Usuário: ' + textoCliente[0][0] + '%0a Senha: ' + textoCliente[1][0] + '%0a url: http://nplay.top' 
-                mensagem = mensagem.replace( " ","+" )
-                try:
-                    mensagemPadrao(i, mensagem, telefone)
-                except:
-                    print("Erro ao enviar mensagem Padrao")
-
-            if dfClientes.iloc[i][colAparelho] == 'Samsung 4K' or dfClientes.iloc[i][colAparelho] ==  'LG 4K':            
-                nome = dfClientes.iloc[i]["Nome"]
-                aplicativo = 'Duplex'
-                print(nome, aplicativo)
-                mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. Seu link M3U é: .' + textoCliente[2][0] + '%0a Site para ativação duplex com ID e Key: https://edit.duplexplay.com/ %0a*(caso tenha dúvidas sobre a ativação responda a essa mensagem)* %0a Aproveite o teste e fique à vontade para nos contatar em caso de dúvidas.'
-                mensagem = mensagem.replace( " ","+" )
-                try:
-                    mensagemPadrao(i, mensagem, telefone)
-                except:
-                    print("Erro ao enviar mensagem Padrao")
-
-            if dfClientes.iloc[i][colAparelho] == 'Philips' or dfClientes.iloc[i][colAparelho] == 'Philco' or dfClientes.iloc[i][colAparelho] == 'Aoc' or dfClientes.iloc[i][colAparelho] == 'TCL "comum"' or dfClientes.iloc[i][colAparelho] == 'Panasonic':              
-                nome = dfClientes.iloc[i]["Nome"]
-                aplicativo = 'SSIPTV'
-                print(nome, aplicativo) 
-                try:
-                    #ativarSSIPTV()
-                    mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. %0aAproveite o teste e fique à vontade para nos contatar em caso de dúvidas.'
-                    mensagem = mensagem.replace( " ","+" )
-                    try:
-                        mensagemPadrao(i, mensagem, telefone)
-                    except:
-                        print("Erro ao enviar mensagem Padrao")
-                except:
-                    mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '. %0aInfelizmente nosso Bot não conseguiu realizar a ativação automática, por favor *responda esta mensagem para ser atendido(a) pelo suporte*.'
-                    try:
-                        mensagemPadrao(i, mensagem, telefone)
-                    except:
-                        print("Erro ao enviar mensagem Padrao")
-                    
-            if dfClientes.iloc[i][colAparelho] == 'TV modelo Android' or dfClientes.iloc[i][colAparelho] == 'TV BOX':
-                nome = dfClientes.iloc[i]["Nome"]
-                aplicativo = 'Royal Place'
-                print(nome, aplicativo)
-                mensagem = 'Olá *' + nome + '*! %0aRecomendamos a você utilizar o aplicativo ' + aplicativo + '%0aDisponível na playstore: https://play.google.com/store/apps/details?id=com.royalplcnew.ml %0a Aproveite o teste e fique à vontade para nos contatar em caso de dúvidas. %0a Usuário: ' + textoCliente[0][0] + '%0a Senha: ' + textoCliente[1][0]
-                mensagem = mensagem.replace( " ","+" )
-                try:
-                    mensagemPadrao(i, mensagem, telefone)
-                except:
-                    print("Erro ao enviar mensagem Padrao")
                 
+                mensagem ='Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *LG modelo 4K* é o *Duplex Play* ou Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :*' +textoCliente[0][0]+ ' %0a*Senha :*' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0a*Duplex Play* %0%0*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 51.222.117.4_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:*' +textoCliente[1][0]+ '%0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
+                mensagem = mensagem.replace( " ","+" )
+                try:
+                    mensagemPadrao(i, mensagem, telefone)
+                except:
+                    print("Erro ao enviar mensagem Padrao")
+
+            if dfClientes.iloc[i][colAparelho] == 'Smart - Philco, Philips, Sony, Panasonic':                       
+                nome = dfClientes.iloc[i]["Nome"]
+                aplicativo = 'STB'
+                print(nome, aplicativo)
+                
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na sua Smart TV é o SSIPTV, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Abra o aplicativo SSIPTV > Configurações > Obter código_ %0a*Passo 2:* _Acesse o site http://ss-iptv.com/en/users/playlist_ %0a*Passo 3:* _Digite o seu código e clicar em Adicionar dispositivo (ADD DEVICE)_ %0a*Passo 4:* _External Playlists > ADD ITEM_ %0a*Displayed Name:* _ROYAL PLACE - BRONZE_ %0a*Source:* ' +textoCliente[2][0]+ ' %0a*OK* %0a%0a*Passo 5:* _SAVE_ %0a*Passo 6:* _Clique em Atualizar no seu aplicativo SSIPTV e abra a pasta ROYAL PLACE - BRONZE_ %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'                
+                mensagem = mensagem.replace( " ","+" )
+                try:
+                    mensagemPadrao(i, mensagem, telefone)
+                except:
+                    print("Erro ao enviar mensagem Padrao")
+
+            
+
             time.sleep(2)
             print("Aguardando novos clientes")
     
@@ -353,8 +339,8 @@ if validar[0] == "valido":
         driver = abrirBlessed()
         driver2 = abrirWhats()
         wpAberto = input("APERTE 'ENTER' CASO O WHATS APP WEB JÁ ESTEJA NA TELA DE CONVERSAS")
-        colAparelho = "Utiliza Smart TV, Chromecast ou TV Box?"
-        numeroWhats = "Número de whatsapp (com DDD)"
+        colAparelho = "Qual o seu aparelho?"
+        numeroWhats = "Número de WhatsApp com DDD (Exemplo: 27 998851972)"
         ultimoCliente = 0
         application(ultimoCliente)
     else:
