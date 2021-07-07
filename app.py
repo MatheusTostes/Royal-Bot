@@ -264,12 +264,8 @@ def application(ultimoCliente):
     dfVendedores = planilhas[2]
     planilhaAtendidos =  planilhas[3]
     print("Buscando clientes...")
-    print('ultimoCliente: ', ultimoCliente)
-    print('len dfClientes: ', len(dfClientes))
     for i in range(ultimoCliente, len(dfClientes)):  
-        print(i)      
         if i not in listaAtendidos:  
-            print(i) 
             ultimoCliente = definirUltCliente(ultimoCliente, i)
             print("Cliente: ", i)       
             adicionarAtendido(planilhaAtendidos, i)
@@ -277,10 +273,20 @@ def application(ultimoCliente):
             print('textoCliente: ', textoCliente)
             print("--criado texto cliente")
             telefone = dfClientes.iloc[i][numeroWhats]
-            hour = int(time.strftime('%H', time.localtime()))
+            
+            hour = str(time.strftime('%H', time.localtime()))
+            if len(hour) == 1:
+                hour = '0'+ hour
+            elif len(hour) == 0:
+                hour = '00'
+            hour = int(hour)
             hour = hour+3
-            minute = int(time.strftime('%M', time.localtime()))
-            dataEndTest = str(hour) + ":" + str(minute)
+            minute = str(time.strftime('%M', time.localtime()))
+            if len(minute) == 1:
+                minute = '0'+ minute
+            elif len(minute) == 0:
+                minute = '00'
+            dataEndTest = str(hour) + ":" + minute
 
             if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung 4K':                       
                 nome = dfClientes.iloc[i]["Nome"]
