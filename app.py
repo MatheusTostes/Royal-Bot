@@ -264,8 +264,12 @@ def application(ultimoCliente):
     dfVendedores = planilhas[2]
     planilhaAtendidos =  planilhas[3]
     print("Buscando clientes...")
-    for i in range(ultimoCliente, len(dfClientes)):        
-        if i not in listaAtendidos:   
+    print('ultimoCliente: ', ultimoCliente)
+    print('len dfClientes: ', len(dfClientes))
+    for i in range(ultimoCliente, len(dfClientes)):  
+        print(i)      
+        if i not in listaAtendidos:  
+            print(i) 
             ultimoCliente = definirUltCliente(ultimoCliente, i)
             print("Cliente: ", i)       
             adicionarAtendido(planilhaAtendidos, i)
@@ -273,13 +277,17 @@ def application(ultimoCliente):
             print('textoCliente: ', textoCliente)
             print("--criado texto cliente")
             telefone = dfClientes.iloc[i][numeroWhats]
+            hour = int(time.strftime('%H', time.localtime()))
+            hour = hour+3
+            minute = int(time.strftime('%M', time.localtime()))
+            dataEndTest = str(hour) + ":" + str(minute)
 
             if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung 4K':                       
                 nome = dfClientes.iloc[i]["Nome"]
                 aplicativo = 'Duplex Play'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo 4K* é o *Duplex Play*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* ' +textoCliente[2][0]+ '_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO seu teste acaba às: *date*'
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo 4K* é o *Duplex Play*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* ' +textoCliente[2][0]+ '_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO seu teste acaba às: *' +dataEndTest+ '*'
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
@@ -292,7 +300,7 @@ def application(ultimoCliente):
                 aplicativo = 'STB'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo antigo* é o *Smart STB*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 51.222.117.4_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo antigo* é o *Smart STB*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 51.222.117.4_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
@@ -305,7 +313,7 @@ def application(ultimoCliente):
                 aplicativo = 'Smarters Players ou Duplex'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *LG modelo 4K* é o *Duplex Play* ou Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :* ' +textoCliente[0][0]+ ' %0a*Senha :* ' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0a*Duplex Play* %0%0*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* textoCliente[2][0]_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *LG modelo 4K* é o *Duplex Play* ou Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :* ' +textoCliente[0][0]+ ' %0a*Senha :* ' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0a*Duplex Play* %0%0*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* textoCliente[2][0]_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                
                 mensagem = mensagem.replace( " ","+" )
                 try:
@@ -319,7 +327,7 @@ def application(ultimoCliente):
                 aplicativo = 'SSIPTV'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na sua *Smart TV* é o *SSIPTV*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Abra o aplicativo SSIPTV > Configurações > Obter código_ %0a*Passo 2:* _Acesse o site http://ss-iptv.com/en/users/playlist_ %0a*Passo 3:* _Digite o seu código e clicar em Adicionar dispositivo (ADD DEVICE)_ %0a*Passo 4:* _External Playlists > ADD ITEM_ %0a*Displayed Name:* _ROYAL PLACE - BRONZE_ %0a*Source:* ' +textoCliente[2][0]+ ' %0a*OK* %0a%0a*Passo 5:* _SAVE_ %0a*Passo 6:* _Clique em Atualizar no seu aplicativo SSIPTV e abra a pasta ROYAL PLACE - BRONZE_ %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'                
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na sua *Smart TV* é o *SSIPTV*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Abra o aplicativo SSIPTV > Configurações > Obter código_ %0a*Passo 2:* _Acesse o site http://ss-iptv.com/en/users/playlist_ %0a*Passo 3:* _Digite o seu código e clicar em Adicionar dispositivo (ADD DEVICE)_ %0a*Passo 4:* _External Playlists > ADD ITEM_ %0a*Displayed Name:* _ROYAL PLACE - BRONZE_ %0a*Source:* ' +textoCliente[2][0]+ ' %0a*OK* %0a%0a*Passo 5:* _SAVE_ %0a*Passo 6:* _Clique em Atualizar no seu aplicativo SSIPTV e abra a pasta ROYAL PLACE - BRONZE_ %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'                
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
@@ -332,7 +340,7 @@ def application(ultimoCliente):
                 aplicativo = 'Royal Place ou Smarters Players'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu *TV BOX* é o *Royal Place*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Royal Place* e selecione a opção *BRONZE* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0][0]+ ' %0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu *TV BOX* é o *Royal Place*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Royal Place* e selecione a opção *BRONZE* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0][0]+ ' %0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
@@ -345,7 +353,7 @@ def application(ultimoCliente):
                 aplicativo = 'GSE IPTV'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu *Chromecast* é o *GSE IPTV*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Chromecast* e adicione uma nova lista com os dados a seguir: %0a*Playlist Name:* Royal Place - Bronze %0a*Description:* Teste %0a*http://...:* ' +textoCliente[2][0]+ ' %0a*Pressione OK* %0a*Passo 2:* Selecione a nova lista e aguarde o carregamento. %0a*passo 3:* Conecte o celular à televisão %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'                 
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu *Chromecast* é o *GSE IPTV*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Chromecast* e adicione uma nova lista com os dados a seguir: %0a*Playlist Name:* Royal Place - Bronze %0a*Description:* Teste %0a*http://...:* ' +textoCliente[2][0]+ ' %0a*Pressione OK* %0a*Passo 2:* Selecione a nova lista e aguarde o carregamento. %0a*passo 3:* Conecte o celular à televisão %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'                 
                 mensagem = mensagem.replace( " ","+" )
                 try:
                     mensagemPadrao(i, mensagem, telefone)
@@ -358,7 +366,7 @@ def application(ultimoCliente):
                 aplicativo = 'Smarters Players'
                 print(nome, aplicativo)
                 
-                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no *iPhone* é o Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :*' +textoCliente[0][0]+ ' %0a*Senha :*' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *date*'
+                mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no *iPhone* é o Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :*' +textoCliente[0][0]+ ' %0a*Senha :*' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
               
                 mensagem = mensagem.replace( " ","+" )
                 try:
@@ -382,8 +390,8 @@ def application(ultimoCliente):
 
             time.sleep(2)
             print("Aguardando novos clientes")
-        else:
-            time.sleep(30)
+        
+    time.sleep(30)
     application(ultimoCliente)    
 
 login = input("Usuario vendedor: ")
