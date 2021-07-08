@@ -258,6 +258,16 @@ def definirUltCliente(ultimoCliente, i):
     ultimoCliente = i
     return ultimoCliente
 
+def repetirTeste():
+    try:
+        textoCliente = criarTesteBlessed()
+    except:
+        time.sleep(3)
+        abrirBlessed()
+        textoCliente = criarTesteBlessed()
+    
+    return textoCliente
+
 def application(ultimoCliente):
     print("Iniciando o bot")
     planilhas = receberPlanilhas(planilha)
@@ -279,12 +289,9 @@ def application(ultimoCliente):
             if len(telefone) == 11 or len(telefone) == 10: 
                 ultimoCliente = definirUltCliente(ultimoCliente, i)
                 print("Cliente: ", i)       
-                adicionarAtendido(planilhaAtendidos, i)
-                textoCliente = criarTesteBlessed()
+                textoCliente = repetirTeste()
                 print('textoCliente: ', textoCliente)
                 print("--criado texto cliente")
-
-
 
                 hour = str(time.strftime('%H', time.localtime()))
                 if len(hour) == 1:
@@ -422,7 +429,7 @@ validar = validar(login, senha, dfVendedores)
 if validar[0] == "valido":
     print("bem-vindo")
     if validar[1] == "ativado":
-        print("Sua assinatura está em dia")
+        print("Assinatura expira em: ", validar[1])
         driver = abrirBlessed()
         driver2 = abrirWhats()
         wpAberto = input("APERTE 'ENTER' CASO O WHATS APP WEB JÁ ESTEJA NA TELA DE CONVERSAS")
