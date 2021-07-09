@@ -209,6 +209,8 @@ def criarTesteBlessed():
     except:
         print("Não foi possível criar teste, tentando novamente!")
         #driver.find_element_by_xpath("/html/body/div[4]/div/div/div[2]/button[3]").click();
+        driver.quit()
+        abrirBlessed()
         time.sleep(3)
         criarTesteBlessed()
     return usuario, senha, listaM3u, DNS, DNSprincipal, SSIPTV, webPlayer, epg, vcapp
@@ -356,7 +358,7 @@ def application(ultimoCliente):
                         aplicativo = 'Smarters Players ou Duplex'
                         print(nome, aplicativo)
                         
-                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *LG modelo 4K* é o *Duplex Play* ou Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :* ' +textoCliente[0][0]+ ' %0a*Senha :* ' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0a*Duplex Play* %0%0*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* textoCliente[2][0]_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
+                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *LG modelo 4K* é o *Duplex Play* ou Smarters Players, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Smarters Players* %0aROYAL PLACE - BRONZE %0a*Login :* ' +textoCliente[0][0]+ ' %0a*Senha :* ' +textoCliente[1][0]+ ' %0a*URL:* http://nplay.top %0a%0a*Duplex Play* %0a*Passo 1:* _Baixe o Aplicativo Duplex Play na sua Smart TV_ %0a*Passo 2:* _Abra o aplicativo, anote o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 3:* _Por meio de *qualquer dispositivo* entre no site: https://edit.duplexplay.com/_ %0a _acesse com o *DEVICE ID* e *DEVICE KEY*_ %0a*Passo 4:* _Clique no botão "Add playlist" e insira nos respectivos campos:_ %0a _*Playlist name =>* ROYAL PLACE - BRONZE_ %0a _*Playlist Url (.M3U or .M3U8) =>* textoCliente[2][0]_ %0a _*Marque a caixa* "Não sou um robô"_ %0a _*Clique em SAVE*_ %0a%0aRealizadas estas etapas, basta clicar em Refresh ou Atualizar o seu Duplex Play %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                     
                         mensagem = mensagem.replace( " ","+" )
                         try:
@@ -383,7 +385,7 @@ def application(ultimoCliente):
                         aplicativo = 'Royal Place ou Smarters Players'
                         print(nome, aplicativo)
                         
-                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu *TV BOX* é o *Royal Place*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Royal Place* e selecione a opção *BRONZE* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0][0]+ ' %0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
+                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu aparelho é o *Royal Place*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Link direto Play Store: https://play.google.com/store/apps/details?id=com.royalplcnew.ml* %0a*Link downloads site: https://www.royalplace.com.br/download*%0a%0a*Passo 1:* Abra o aplicativo *Royal Place* e selecione a opção *BRONZE* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0][0]+ ' %0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                         mensagem = mensagem.replace( " ","+" )
                         try:
                             mensagemPadrao(i, mensagem, telefone)
