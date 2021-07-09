@@ -306,15 +306,16 @@ def application(ultimoCliente):
                     print('textoCliente: ', textoCliente)
                     print("--criado texto cliente")
 
-                    hour = str(time.strftime('%H', time.localtime()))
-                    if len(hour) == 1:
-                        hour = '0'+ hour
-                    elif len(hour) == 0:
-                        hour = '00'
+                    hour = time.strftime('%H', time.localtime())
                     hour = int(hour)
                     hour = hour+3
                     if hour >= 24:
                         hour = hour - 24
+                    hour = str(hour)
+                    if len(hour) == 1:
+                        hour = '0'+ hour
+                    elif len(hour) == 0:
+                        hour = '00'
                     minute = str(time.strftime('%M', time.localtime()))
                     if len(minute) == 1:
                         minute = '0'+ minute
