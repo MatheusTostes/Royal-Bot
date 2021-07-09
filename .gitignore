@@ -14,3 +14,13 @@ py_cache/
 dist/
 appdebug.py
 geckodriver.log
+upx-3.96-win64/BUGS
+upx-3.96-win64/COPYING
+upx-3.96-win64/LICENSE
+upx-3.96-win64/README
+upx-3.96-win64/NEWS
+upx-3.96-win64/THANKS
+*.1ST
+*.doc
+*.1
+*.exe

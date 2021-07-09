@@ -216,7 +216,7 @@ def criarTesteBlessed():
 def enviar():
     print("Enviando mensagem")
     try:
-        driver2.find_element_by_class_name("_1E0Oz").click()
+        driver2.find_element_by_class_name("_4sWnG").click()
     except:
         print("Não foi possível enviar a mensagem, tentando novamente!")
         time.sleep(3)
