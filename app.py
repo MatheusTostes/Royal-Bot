@@ -313,6 +313,8 @@ def application(ultimoCliente):
                         hour = '00'
                     hour = int(hour)
                     hour = hour+3
+                    if hour >= 24:
+                        hour = hour - 24
                     minute = str(time.strftime('%M', time.localtime()))
                     if len(minute) == 1:
                         minute = '0'+ minute
