@@ -446,11 +446,12 @@ senha = str(input("Senha vendedor: "))
 validar = validar(login, senha, dfVendedores)
 
 ExpireDate = validar[2]
-Business = validar[3]
+Business = validar[3].title()
+Name = validar[4].title()
 
 if validar[0] == "valido":
     if validar[1] == "ativado":
-        print("bem-vindo "+ validar[4]+ "("+Business+")")
+        print("bem-vindo "+ Name + "("+Business+")")
         print("Assinatura expira em: ", ExpireDate)
         driver = abrirBlessed()
         driver2 = abrirWhats()
