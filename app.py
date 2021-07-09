@@ -297,6 +297,8 @@ def application(ultimoCliente):
                 telefone = telefone.replace("+","")
                 telefone = telefone.replace(" ","")
                 telefone = telefone.replace("-","")
+                if telefone.isdecimal() == False:
+                    telefone = ""
                 if telefone[:2] == "55":
                     telefone = telefone[2:]
                 if len(telefone) == 11 or len(telefone) == 10: 
@@ -341,7 +343,7 @@ def application(ultimoCliente):
                         aplicativo = 'STB'
                         print(nome, aplicativo)
                         
-                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo antigo* é o *Smart STB*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 51.222.117.4_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
+                        mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar na *Samsung modelo antigo* é o *Smart STB*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* _Ligue a TV e abra a janela "Configurações" pressionando o botão "Configurações" no controle remoto da TV._ %0a*Passo 2:* _Vá para a guia Geral e selecione Rede na lista de opções._ %0a*Passo 3:* _Você pode verificar se a TV está conectada à Internet em "Status da rede"._ %0a*Passo 4:* _Selecione as configurações de IP e vá para as configurações de DNS._ %0a*Passo 5:* _Você deve alterar as configurações de DNS de entrada manualmente._ %0a*Passo 6:* _Na configuração DNS você verá o servidor DNS atual, altere para 198.50.224.145_ %0a*Passo 7:* _Abra o Aplicativo STB Smart e utilize os dados a seguir:_ %0a%0a*Login:* ' +textoCliente[0][0]+ '%0a*Senha:* ' +textoCliente[1][0]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                         mensagem = mensagem.replace( " ","+" )
                         try:
                             mensagemPadrao(i, mensagem, telefone)
