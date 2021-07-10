@@ -78,6 +78,12 @@ dfVendedores = planilhas[2]
 planilhaAtendidos =  planilhas[3]
 
 def validar(login, senha, dfVendedores):
+    validar = ''
+    estado = ''
+    ExpireDate = ''
+    Business = ''
+    user = ''
+
     if login in dfVendedores["User"].to_list():
         for i in dfVendedores["User"]:
             if login == i:
@@ -92,10 +98,12 @@ def validar(login, senha, dfVendedores):
                     validar = "valido"
                     break
                 else:
+                    #print("Senha inválida")
                     validar = "invalido"
             else:
                 validar = "invalido"
     else:
+        #print("Usuário Inválido")
         validar = "invalido"
         estado = "desativado"
     return validar, estado, ExpireDate, Business, user
