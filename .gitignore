@@ -25,3 +25,4 @@ upx-3.96-win64/THANKS
 *.1
 *.exe
 apptest.py
+playw.py
