@@ -24,3 +24,4 @@ upx-3.96-win64/THANKS
 *.doc
 *.1
 *.exe
+apptest.py
