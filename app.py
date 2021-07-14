@@ -7,7 +7,8 @@ import gspread
 from google.oauth2 import service_account
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+
+from selenium.webdriver.common.keys import Keys
 
 pd.set_option('display.max_rows', 350)
 pd.set_option('display.max_columns', 100)
@@ -164,26 +165,30 @@ def dadosFive(texto):
     print(texto)
     return texto
 
-def criarTesteFive():
+def criarTesteFive(telefone, minute, seconds):
     try:
         driver.get("http://painel.c-pro.site/users/add_trial")
         time.sleep(2)
-        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/h4/div/button').click()
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+telefone+minute+seconds)
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("g14072021")
         time.sleep(1)
-        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/h4/div/div/button[3]').click()
+        driver.find_element_by_xpath('//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)         
+        time.sleep(1)
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[2]/div/button[2]').click()
         time.sleep(2)
         print("Capturando dados")
         texto = driver.find_element_by_id('swal2-content').text
         print(texto)
         if 'username' not in texto and 'Senha' not in texto:
-            criarTesteFive()
+            criarTesteFive(telefone, minute, seconds)
+        time.sleep(2)
         textoCliente = dadosFive(texto)
-        linkM3U = "http://5ce.co/get.php?username="+textoCliente[0]+"&password="+textoCliente[1]+"&type=m3u_plus&output=ts"
+        linkM3U = "http://5ce.co/get.php?username="+textoCliente[0]+"%26password="+textoCliente[1]+"%26type=m3u_plus%26output=ts"
         textoCliente.append(linkM3U)
     except Exception as e:
         print(e)
         time.sleep(2)
-        criarTesteFive()
+        criarTesteFive(telefone, minute, seconds)
     return textoCliente
 
 def enviar():
@@ -285,10 +290,8 @@ def application(ultimoCliente):
                     if len(telefone) == 11 or len(telefone) == 10: 
                         ultimoCliente = definirUltCliente(ultimoCliente, i)
                         print("Cliente: ", i)       
-                        textoCliente = criarTesteFive()
-                        print('textoCliente: ', textoCliente)
-                        print("--criado texto cliente")
 
+                        seconds = time.strftime('%S', time.localtime())
                         hour = time.strftime('%H', time.localtime())
                         hour = int(hour)
                         hour = hour+6
@@ -306,8 +309,14 @@ def application(ultimoCliente):
                             minute = '00'
                         dataEndTest = str(hour) + ":" + minute
 
+                        textoCliente = criarTesteFive(telefone, minute, seconds)
+                        print('textoCliente: ', textoCliente)
+                        print("--criado texto cliente")
+
+                        nome = dfClientes.iloc[i]["Nome"]
+                        nome = nome.capitalize()
+
                         if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung 4K':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'Duplex Play'
                             print(nome, aplicativo)
                             
@@ -320,7 +329,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
                         
                         if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung antiga':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'STB'
                             print(nome, aplicativo)
                             
@@ -333,7 +341,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
                         
                         if dfClientes.iloc[i][colAparelho] == 'Smart - LG 4K' or dfClientes.iloc[i][colAparelho] == 'Smart - LG antiga':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'Smarters Players ou Duplex'
                             print(nome, aplicativo)
                             
@@ -347,7 +354,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
 
                         if dfClientes.iloc[i][colAparelho] == 'Smart - Philco, Philips, Sony, Panasonic':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'SSIPTV'
                             print(nome, aplicativo)
                             
@@ -360,7 +366,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
 
                         if dfClientes.iloc[i][colAparelho] == 'TV BOX' or dfClientes.iloc[i][colAparelho] == 'Celular Android':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'Royal Place ou Smarters Players'
                             print(nome, aplicativo)
                             
@@ -373,7 +378,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
 
                         if dfClientes.iloc[i][colAparelho] == 'Chromecast':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'GSE IPTV'
                             print(nome, aplicativo)
                             
@@ -386,7 +390,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
 
                         if dfClientes.iloc[i][colAparelho] == 'iPhone':                       
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'Smarters Players'
                             print(nome, aplicativo)
                             
@@ -400,7 +403,6 @@ def application(ultimoCliente):
                                 print("Erro ao enviar mensagem Padrao")
 
                         if dfClientes.iloc[i][colAparelho] == 'Android TV' or dfClientes.iloc[i][colAparelho] == 'Outro':
-                            nome = dfClientes.iloc[i]["Nome"]
                             aplicativo = 'Smarters Players'
                             print(nome, aplicativo)
                             
