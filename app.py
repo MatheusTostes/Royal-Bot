@@ -159,12 +159,12 @@ def dadosFive(texto):
     print(texto)
     return texto
 
-def criarTesteFive(telefone, minute, seconds):
+def criarTesteFive(hour, minute, seconds):
     try:
         driver.get("http://painel.c-pro.site/users/add_trial")
         time.sleep(2)
-        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+telefone+minute+seconds)
-        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("g14072021")
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("p2pgold")
         time.sleep(1)
         driver.find_element_by_xpath('//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)         
         time.sleep(1)
@@ -174,7 +174,7 @@ def criarTesteFive(telefone, minute, seconds):
         texto = driver.find_element_by_id('swal2-content').text
         print(texto)
         if 'username' not in texto and 'Senha' not in texto:
-            criarTesteFive(telefone, minute, seconds)
+            criarTesteFive(hour, minute, seconds)
         time.sleep(2)
         textoCliente = dadosFive(texto)
         linkM3U = "http://5ce.co/get.php?username="+textoCliente[0]+"%26password="+textoCliente[1]+"%26type=m3u_plus%26output=ts"
@@ -182,7 +182,7 @@ def criarTesteFive(telefone, minute, seconds):
     except Exception as e:
         print(e)
         time.sleep(2)
-        criarTesteFive(telefone, minute, seconds)
+        criarTesteFive(hour, minute, seconds)
     return textoCliente
 
 def enviar():
@@ -303,7 +303,7 @@ def application(ultimoCliente):
                             minute = '00'
                         dataEndTest = str(hour) + ":" + minute
 
-                        textoCliente = criarTesteFive(telefone, minute, seconds)
+                        textoCliente = criarTesteFive(hour, minute, seconds)
                         print('textoCliente: ', textoCliente)
                         print("--criado texto cliente")
 
