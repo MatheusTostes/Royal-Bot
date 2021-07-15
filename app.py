@@ -129,6 +129,7 @@ def abrirWhats():
 
 def loginFive(driver):
   try:
+    input("Pressione ENTER quando estiver na tela de login do painel")
     print('logando five')
     driver.find_element_by_name('username').send_keys("matheustostes")
     driver.find_element_by_name('password').send_keys('Matheus123')
@@ -136,7 +137,7 @@ def loginFive(driver):
     time.sleep(1)
   except Exception as e:
     print(e)
-    input("Atualize a pagina do painel")
+    input("Verifique a tela de login do painel")
     loginFive(driver)
     pass
 
