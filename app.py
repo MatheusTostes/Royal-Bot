@@ -400,7 +400,7 @@ def application(ultimoCliente):
                             aplicativo = 'Smarters Players'
                             print(nome, aplicativo)
                             
-                            mensagem = 'Olá *'+ nome +'*! %0aResponda a esta mensagem e aguarde o atendimento.'              
+                            mensagem = 'Olá *'+ nome +'*! %0aO seu dispositivo necessita de atendimento especializado, por favor responda a esta mensagem e aguarde um atendente. %0a%0aCaso tenha algum aplicativo instalado no dispositivo pode tentar inserir alguns destes dados se requisitado: %0a%0a*Usuário:* ' +textoCliente[0]+ ' %0a*Senha:* ' +textoCliente[1]+ '%0aLink .M3U:* ' +textoCliente[2]+ '. %0a%0aEm caso de dúvida, aguarde o suporte.'              
                             mensagem = mensagem.replace( " ","+" )
                             try:
                                 mensagemPadrao(i, mensagem, telefone)
