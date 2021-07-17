@@ -86,7 +86,7 @@ def validar(login, senha, dfVendedores):
                     user = dfVendedores["User"][id]
                     Business = dfVendedores["Business"][id]
                     ExpireDate = dfVendedores["ExpireDate"][id]
-                    print("logado")                   
+                    print("Logado")                   
                     estado = dfVendedores['Estado'][id]
                     print(estado)
                     validar = "valido"
@@ -103,6 +103,28 @@ def validar(login, senha, dfVendedores):
     return validar, estado, ExpireDate, Business, user
 
 pathGecko = location + "\\data\\geckodriver.exe"
+
+def obterHora():
+    seconds = time.strftime('%S', time.localtime())
+    hour = time.strftime('%H', time.localtime())
+    hour = int(hour)
+    hour = hour+6
+    if hour >= 24:
+        hour = hour - 24
+    hour = str(hour)
+    if len(hour) == 1:
+        hour = '0'+ hour
+    elif len(hour) == 0:
+        hour = '00'
+    minute = str(time.strftime('%M', time.localtime()))
+    if len(minute) == 1:
+        minute = '0'+ minute
+    elif len(minute) == 0:
+        minute = '00'
+    dataEndTest = str(hour) + ":" + minute
+
+    return dataEndTest, hour, minute, seconds
+
 
 def abrirWhats():
     print("Abrindo WhatsApp Web")
@@ -156,11 +178,17 @@ def dadosFive(texto):
     texto = texto.replace("username: ", "")
     texto = texto.replace("Senha: ", "")
     texto = texto.split(" | ")
-    print(texto)
+    #print(texto)
     return texto
 
-def criarTesteFive(hour, minute, seconds):
+def criarTesteFive():
     try:
+
+        horarioTeste = obterHora()
+        hour = horarioTeste[1]
+        minute = horarioTeste[2]
+        seconds = horarioTeste[3]
+
         driver.get("http://painel.c-pro.site/users/add_trial")
         time.sleep(2)
         driver.find_element_by_xpath('//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
@@ -172,9 +200,9 @@ def criarTesteFive(hour, minute, seconds):
         time.sleep(2)
         print("Capturando dados")
         texto = driver.find_element_by_id('swal2-content').text
-        print(texto)
+        #print(texto)
         if 'username' not in texto and 'Senha' not in texto:
-            criarTesteFive(hour, minute, seconds)
+            criarTesteFive()
         time.sleep(2)
         textoCliente = dadosFive(texto)
         linkM3U = "http://5ce.co/get.php?username="+textoCliente[0]+"%26password="+textoCliente[1]+"%26type=m3u_plus%26output=ts"
@@ -182,7 +210,7 @@ def criarTesteFive(hour, minute, seconds):
     except Exception as e:
         print(e)
         time.sleep(2)
-        criarTesteFive(hour, minute, seconds)
+        criarTesteFive()
     return textoCliente
 
 def enviar():
@@ -198,14 +226,14 @@ def mensagemPadrao(i, mensagem, telefone):
     print("Gerando mensagem padrão")
     try:
         linkWhats = ('https://web.whatsapp.com/send?phone=55' + str(telefone) + '&text=' + mensagem)
-        print(linkWhats)
+        #print(linkWhats)
 
         driver2.get(linkWhats)
         time.sleep(5)
         enviar()
         time.sleep(3)
         relogio =  driver2.find_elements_by_css_selector('[aria-label=" Pendente "]')
-        print(relogio)
+        #print(relogio)
         if len(relogio) > 1:        
             print("O WhatsApp pode estar desconectado, tentando novamente!")
             mensagemPadrao(i, mensagem, telefone)
@@ -292,25 +320,10 @@ def application(ultimoCliente):
                         ultimoCliente = definirUltCliente(ultimoCliente, i)
                         print("Cliente: ", i)       
 
-                        seconds = time.strftime('%S', time.localtime())
-                        hour = time.strftime('%H', time.localtime())
-                        hour = int(hour)
-                        hour = hour+6
-                        if hour >= 24:
-                            hour = hour - 24
-                        hour = str(hour)
-                        if len(hour) == 1:
-                            hour = '0'+ hour
-                        elif len(hour) == 0:
-                            hour = '00'
-                        minute = str(time.strftime('%M', time.localtime()))
-                        if len(minute) == 1:
-                            minute = '0'+ minute
-                        elif len(minute) == 0:
-                            minute = '00'
-                        dataEndTest = str(hour) + ":" + minute
+                        horarioTeste = obterHora()
+                        dataEndTest = horarioTeste[0]
 
-                        textoCliente = criarTesteFive(hour, minute, seconds)
+                        textoCliente = criarTesteFive()
                         print('textoCliente: ', textoCliente)
                         print("--criado texto cliente")
 
@@ -378,6 +391,7 @@ def application(ultimoCliente):
                             except:
                                 print("Erro ao enviar mensagem Padrao")
                             
+                            print("Alterando tipo de lista de IPTV para P2P")
                             alterarListaP2P(driver)
 
                         if dfClientes.iloc[i][colAparelho] == 'Chromecast':                       
