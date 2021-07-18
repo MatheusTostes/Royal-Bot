@@ -383,7 +383,7 @@ def application(ultimoCliente):
                             aplicativo = 'Royal Place ou Smarters Players'
                             print(nome, aplicativo)
                             
-                            mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu aparelho é o *Royal Place*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Link direto Play Store: https://play.google.com/store/apps/details?id=com.royalplcnew.ml* %0a*Link downloads site: https://www.royalplace.com.br/download*%0a%0a*Passo 1:* Abra o aplicativo *Royal Place* e selecione a opção *GOLD* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0]+ ' %0a*Senha:* ' +textoCliente[1]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
+                            mensagem = 'Olá *'+ nome +'*! %0aO aplicativo indicado pra utilizar no seu aparelho é o *Royal Place P2P*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Link direto Play Store: https://play.google.com/store/apps/details?id=nd.ndapps.royalplacep2p%26hl=pt_BR%26gl=US * %0a*Link downloads site: https://www.royalplace.com.br/download*%0a%0a*Passo 1:* Abra o aplicativo *Royal Place P2P* %0a*Passo 2:* Insira os dados a seguir: %0a*Usuário:* ' +textoCliente[0]+ ' %0a*Senha:* ' +textoCliente[1]+ ' %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' +dataEndTest+ '*'
                             mensagem = mensagem.replace( " ","+" )
                             try:
                                 mensagemPadrao(i, mensagem, telefone)
