@@ -1,5 +1,7 @@
 print("========================== RP Bot ==========================")
 
+versionAtual = '1.1.1'
+
 import pandas as pd
 import time
 import gspread
@@ -452,6 +454,16 @@ def application(ultimoCliente):
         print("Confira sua conexão com a internet e contate o suporte técnico!")
         print(e)
         application(ultimoCliente)
+
+news = gc.open("Solicitação de teste RoyalPlace (Respostas)").get_worksheet(3)
+versionNew = news.acell('B2').value
+
+print("====================== Versão: ", versionAtual ," =====================")
+
+def verificarAtt():
+    if versionAtual != versionNew:
+        print("Há uma nova atualização disponível. Para obte-la feche o bot e execute o arquivo update.exe")
+verificarAtt()
 
 login = str(input("Usuario vendedor: "))
 senha = str(input("Senha vendedor: "))
