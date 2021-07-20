@@ -1,6 +1,6 @@
 print("========================== RP Bot ==========================")
 
-versionAtual = '1.1.3'
+versionAtual = '1.1.4'
 
 import pandas as pd
 import time
@@ -229,6 +229,16 @@ def enviar():
         driver2.find_element_by_class_name("_4sWnG").click()
     except:
         print("Não foi possível enviar a mensagem, tentando novamente!")
+
+        try:
+            erro = driver2.find_element_by_xpath('//*[@id="app"]/div[1]/span[2]/div[1]/span/div[1]/div/div/div/div/div[1]').text
+            print (erro)
+            if "O número de telefone compartilhado através de url é inválido." in erro:
+                application(ultimoCliente)
+        except Exception as e:
+            print (e)
+            pass
+
         time.sleep(3)
         enviar()
 
@@ -338,7 +348,7 @@ def application(ultimoCliente):
 
                             textoCliente = criarTesteFive()
                             # print('textoCliente: ', textoCliente)
-                            print("--criado texto cliente")
+                            print("--criado teste do cliente")
 
                             nome = dfClientes.iloc[i]["Nome"]
                             nome = nome.capitalize()
