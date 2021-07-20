@@ -97,17 +97,21 @@ def validar(login, senha, dfVendedores):
                     print(estado)
                     macSeller = dfVendedores['Mac'][id]
                     validar = "valido"
-                    break
+                    return validar, estado, ExpireDate, Business, user, Online, id, macSeller
                 else:
                     #print("Senha inválida")
                     validar = "invalido"
+                    print("Usuário e/ou senha incorreto/os")
+                    os._exit(0)
             else:
                 validar = "invalido"
+                #print("Usuário e/ou senha incorreto/os")
     else:
         #print("Usuário Inválido")
         validar = "invalido"
         estado = "desativado"
-    return validar, estado, ExpireDate, Business, user, Online, id, macSeller
+        print("Usuário e/ou senha incorreto/os")
+        os._exit(0)
 
 pathGecko = location + "\\data\\geckodriver.exe"
 
@@ -189,7 +193,6 @@ def dadosFive(texto):
 
 def criarTesteFive():
     try:
-
         horarioTeste = obterHora()
         hour = horarioTeste[1]
         minute = horarioTeste[2]
@@ -573,4 +576,3 @@ if UserAndPass == "valido":
         print("Sua conta expirou em: ", ExpireDate)
 else:
     print("Usuário ou senha inválido")
-
