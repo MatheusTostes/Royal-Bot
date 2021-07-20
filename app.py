@@ -1,11 +1,12 @@
 print("========================== RP Bot ==========================")
 
-versionAtual = '1.1.2'
+versionAtual = '1.1.3'
 
 import pandas as pd
 import time
 import gspread
 from google.oauth2 import service_account
+from getmac import get_mac_address as gma
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -94,6 +95,7 @@ def validar(login, senha, dfVendedores):
                     print("Logado")                   
                     estado = dfVendedores['Estado'][id]
                     print(estado)
+                    macSeller = dfVendedores['Mac'][id]
                     validar = "valido"
                     break
                 else:
@@ -105,7 +107,7 @@ def validar(login, senha, dfVendedores):
         #print("Usuário Inválido")
         validar = "invalido"
         estado = "desativado"
-    return validar, estado, ExpireDate, Business, user, Online, id
+    return validar, estado, ExpireDate, Business, user, Online, id, macSeller
 
 pathGecko = location + "\\data\\geckodriver.exe"
 
@@ -482,6 +484,20 @@ Business = validar[3].title()
 Name = validar[4].title()
 Online = validar[5]
 id = validar[6]
+macSeller = validar[7]
+# print(macSeller)
+
+macAddress = gma()
+
+def definirMac(macAddress):
+    plVendedores = gc.open("Solicitação de teste RoyalPlace (Respostas)").get_worksheet(2)
+    # print("id: ", id)
+    coord = 'G'+str(id+2)
+    # print("coord :", coord)
+    plVendedores.update_acell(coord, macAddress)
+
+if len(str(macSeller)) < 3:
+    definirMac(macAddress)
 
 def desconectarConta(id):
     plVendedores = gc.open("Solicitação de teste RoyalPlace (Respostas)").get_worksheet(2)
@@ -519,27 +535,30 @@ numeroWhats = "Número de WhatsApp com DDD (Exemplo: 27 998851972)"
 
 if UserAndPass == "valido":
     if validar[1] == "ativado":
-        if Online == 'não':
-            horas = horas()
-            print(horas)
-            conectarConta(id)
-            iniciar = iniciar()
-            driver = iniciar[0]
-            driver2 = iniciar[1]
-            application(ultimoCliente)
-        else:
-            print("Sua conta já se encontra conectada a outra sessão!")
-            forceDC = str(input("Deseja forçar a desconexão? Digite 1 para 'sim' ou 2 para 'não: "))
-            if forceDC == '1':
-                desconectarConta(id)
+        if macAddress == macSeller:
+            if Online == 'não':
                 horas = horas()
+                print(horas)
                 conectarConta(id)
                 iniciar = iniciar()
                 driver = iniciar[0]
                 driver2 = iniciar[1]
                 application(ultimoCliente)
             else:
-                print("Não é possível executar duas sessões na mesma conta!")
+                print("Sua conta já se encontra conectada a outra sessão!")
+                forceDC = str(input("Deseja forçar a desconexão? Digite 1 para 'sim' ou 2 para 'não: "))
+                if forceDC == '1':
+                    desconectarConta(id)
+                    horas = horas()
+                    conectarConta(id)
+                    iniciar = iniciar()
+                    driver = iniciar[0]
+                    driver2 = iniciar[1]
+                    application(ultimoCliente)
+                else:
+                    print("Não é possível executar duas sessões na mesma conta!")
+        else:
+            print("Máquina não reconhecida, contate o Suporte. Por segurança, a sessão será finalizada.")
     else:
         print("Sua conta expirou em: ", ExpireDate)
 else:
