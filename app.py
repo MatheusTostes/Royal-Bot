@@ -505,7 +505,7 @@ def application(ultimoCliente):
         print(e)
         application(ultimoCliente)
 
-news = gc.open("Solicitação de teste RoyalPlace (Respostas)").get_worksheet(3)
+news = gc.open("Solicitação de teste RoyalPlace (Respostas)").worksheet('news')
 versionNew = news.acell('B2').value
 
 print("====================== Versão: ",
