@@ -545,12 +545,9 @@ def definirMac(macAddress):
     # print("coord :", coord)
     plVendedores.update_acell(coord, macAddress)
 
-if len(str(macSeller)) < 3:
-    definirMac(macAddress)
-
 def desconectarConta(id):
     plVendedores = gc.open(
-        "Solicitação de teste RoyalPlace (Respostas)").get_worksheet(2)
+        "Solicitação de teste RoyalPlace (Respostas)").worksheet("Sellers")
     # print("id: ", id)
     coord = 'F'+str(id+2)
     # print("coord :", coord)
@@ -584,14 +581,29 @@ def obterNomeAba(id):
     NomeAba = dfVendedores["NomeAba"][id]
     return NomeAba
 
+def guardarVersao(id):
+    plVendedores = gc.open(
+        "Solicitação de teste RoyalPlace (Respostas)").worksheet("Sellers")
+    # print("id: ", id)
+    coord = 'I'+str(id+2)
+    # print("coord :", coord)
+    plVendedores.update_acell(coord, versionAtual)
+
 ultimoCliente = 0
 colAparelho = "Qual o seu aparelho?"
 numeroWhats = "Número de WhatsApp com DDD (Exemplo: 27 998851972)"
 
 if UserAndPass == "valido":
-    if validar[1] == "ativado":
+    if validar[1] == "ativado": 
+        if len(str(macSeller)) < 3:
+            definirMac(macAddress)
+            macSeller = macAddress
+            pass
+        else:
+            pass
         if macAddress == macSeller:
             if Online == 'não':
+                guardarVersao(id)
                 horas = horas()
                 print(horas)
                 conectarConta(id)
@@ -600,12 +612,14 @@ if UserAndPass == "valido":
                 iniciar = iniciar()
                 driver = iniciar[0]
                 driver2 = iniciar[1]
+                guardarVersao(id)
                 application(ultimoCliente)
             else:
                 print("Sua conta já se encontra conectada a outra sessão!")
                 forceDC = str(
                     input("Deseja forçar a desconexão? Digite 1 para 'sim' ou 2 para 'não: "))
                 if forceDC == '1':
+                    guardarVersao(id)
                     desconectarConta(id)
                     horas = horas()
                     conectarConta(id)
