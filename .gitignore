@@ -9,5 +9,4 @@ upx-3.96-win64/
 estudo/
 .vscode/
 app.spec
-
-appV2.py
+appV0.py
