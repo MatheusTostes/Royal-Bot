@@ -386,7 +386,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'Smart - Samsung antiga':
+                            elif dfClientes.iloc[i][colAparelho] == 'Smart - Samsung antiga':
                                 aplicativo = 'STB'
                                 print(nome, aplicativo)
 
@@ -400,7 +400,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'Smart - LG 4K' or dfClientes.iloc[i][colAparelho] == 'Smart - LG antiga':
+                            elif dfClientes.iloc[i][colAparelho] == 'Smart - LG 4K' or dfClientes.iloc[i][colAparelho] == 'Smart - LG antiga':
                                 aplicativo = 'Smarters Players ou Duplex'
                                 print(nome, aplicativo)
 
@@ -414,7 +414,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'Smart - Philco, Philips, Sony, Panasonic':
+                            elif dfClientes.iloc[i][colAparelho] == 'Smart - Philco, Philips, Sony, Panasonic':
                                 aplicativo = 'SSIPTV'
                                 print(nome, aplicativo)
 
@@ -427,7 +427,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'TV BOX' or dfClientes.iloc[i][colAparelho] == 'Celular Android':
+                            elif dfClientes.iloc[i][colAparelho] == 'TV BOX' or dfClientes.iloc[i][colAparelho] == 'Celular Android':
                                 aplicativo = 'Royal Place ou Smarters Players'
                                 print(nome, aplicativo)
 
@@ -444,7 +444,7 @@ def application(ultimoCliente):
                                 print("Alterando tipo de lista de IPTV para P2P")
                                 alterarListaP2P(driver)
 
-                            if dfClientes.iloc[i][colAparelho] == 'Chromecast':
+                            elif dfClientes.iloc[i][colAparelho] == 'Chromecast':
                                 aplicativo = 'GSE IPTV'
                                 print(nome, aplicativo)
 
@@ -457,7 +457,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'iPhone':
+                            elif dfClientes.iloc[i][colAparelho] == 'iPhone':
                                 aplicativo = 'Smarters Players'
                                 print(nome, aplicativo)
 
@@ -472,7 +472,7 @@ def application(ultimoCliente):
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
-                            if dfClientes.iloc[i][colAparelho] == 'Android TV' or dfClientes.iloc[i][colAparelho] == 'Outro':
+                            elif dfClientes.iloc[i][colAparelho] == 'Android TV' or dfClientes.iloc[i][colAparelho] == 'Outro':
                                 aplicativo = 'Smarters Players'
                                 print(nome, aplicativo)
 
@@ -494,7 +494,7 @@ def application(ultimoCliente):
                                   telefone, dfClientes.iloc[i]["Nome"])
                             print("---------------------")
  
-                time.sleep(10)
+                time.sleep(30)
                 application(ultimoCliente)
             else:
                 print("Sua assinatura expirou! Contate o suporte.")
