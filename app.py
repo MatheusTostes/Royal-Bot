@@ -369,7 +369,10 @@ def application(ultimoCliente):
                             print("--criado teste do cliente")
 
                             nome = dfClientes.iloc[i]["Nome"]
-                            nome = nome.capitalize()
+                            try:
+                                nome = nome.capitalize()
+                            except:
+                                pass
                             
                             print(telefone, nome)
 
