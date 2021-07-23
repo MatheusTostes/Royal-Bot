@@ -11,7 +11,7 @@ from datetime import datetime
 
 print("========================== RP Bot ==========================")
 
-versionAtual = '1.1.7'
+versionAtual = '1.1.8'
 
 location = os.getcwd()
 print(location)
@@ -22,8 +22,11 @@ scopes = ["https://www.googleapis.com/auth/spreadsheets",
 json_file = pathCredentials
 
 def screenshotError():
-    capturar = pyautogui.screenshot()
-    capturar.save('erro.png')
+    try:
+        capturar = pyautogui.screenshot()
+        capturar.save('erro.png')
+    except:
+        pass
 
 def login():
     print("Logando no banco de dados")
@@ -33,13 +36,14 @@ def login():
         scoped_credentials = credentials.with_scopes(scopes)
         gc = gspread.authorize(scoped_credentials)
         planilha = gc.open("Solicitação de teste RoyalPlace (Respostas)")
+        return planilha, gc
     except Exception as e:
         print("Não foi possível logar no banco de dados, tentando novamente!")
         print(e)
         time.sleep(3)
-        # login()
+        login()
 
-    return planilha, gc
+ 
 
 funcLogin = login()
 planilha = funcLogin[0]
@@ -50,20 +54,24 @@ def receberVendedores(planilha):
         abaVendedores = planilha.worksheet("Sellers")
         dadosVendedores = abaVendedores.get_all_records()
         dfVendedores = pd.DataFrame(dadosVendedores)
+        return dfVendedores
     except Exception as e:
         print(e)
         print("Vendedores não encontrados, tentando novamente!")
-    return dfVendedores
+        time.sleep(3)
+        receberVendedores(planilha)
 
 def receberClientes(planilha, NomeAba):
     try:
         abaClientes = planilha.worksheet(NomeAba)
         dadosClientes = abaClientes.get_all_records()
         dfClientes = pd.DataFrame(dadosClientes)
+        return dfClientes
     except Exception as e:
         print(e)
         print("Clientes não recebidos, tentando novamente!")
-    return dfClientes
+        time.sleep(3)
+        receberClientes(planilha, NomeAba)
 
 dfVendedores = receberVendedores(planilha)
 
@@ -137,12 +145,12 @@ def abrirWhats():
         driver2 = webdriver.Chrome(pathChrome, options=options)
         driver2.get("https://web.whatsapp.com/")
         # driver2.maximize_window()
+        return driver2
     except:
         print("Não foi possível abrir o WhatsApp Web, tentando novamente!")
         time.sleep(3)
         abrirWhats()
-    return driver2
-
+    
 def loginFive(driver):
     try:
         print("Atualize a pagina do painel e aguarde a tela de Login")
@@ -205,12 +213,31 @@ def dadosFive(texto):
 
 def enviarVendedor():
     try:
+        driver2.maximize_window();time.sleep(0.2)
         driver2.find_element_by_class_name("_4sWnG").click()
+        driver2.minimize_window()
         time.sleep(5)
     except:
         time.sleep(2)
         enviarVendedor()
         print("Não foi possível enviar a mensagem ao revendedor!")
+
+def relogFive():
+    try:
+        driver.maximize_window();time.sleep(0.5)
+        pyautogui.keyDown('alt')
+        pyautogui.press('d')
+        pyautogui.press('enter')
+        pyautogui.keyUp('alt');time.sleep(0.5)
+        driver.minimize_window()
+        time.sleep(8)
+        driver.maximize_window();time.sleep(0.5)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('w')
+        pyautogui.press('ctrl');time.sleep(0.5)
+        driver.minimize_window()
+    except:
+        pass
 
 def criarTesteFive():
     try:
@@ -243,9 +270,12 @@ def criarTesteFive():
         except:
             mensagem = Name + ', verifique se o painel Five se encontra online'
             contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
+            driver2.maximize_window();time.sleep(0.2)
             driver2.get(contatoVendedor)
+            driver2.minimize_window()
             time.sleep(5)
             enviarVendedor()
+            relogFive()
             loginFive(driver)
             application(ultimoCliente)
             criarTesteFive()
@@ -273,7 +303,9 @@ def criarTesteFive():
 def enviar(i):
     print("Enviando mensagem")
     try:
+        driver2.maximize_window();time.sleep(0.2)
         driver2.find_element_by_class_name("_4sWnG").click()
+        driver2.minimize_window()
     except:
         print("Não foi possível enviar a mensagem, tentando novamente!")
 
@@ -289,6 +321,7 @@ def enviar(i):
             pass
 
         time.sleep(3)
+        print('estou chegando aqui')
         enviar(i)
 
 def mensagemPadrao(i, mensagem, telefone):
@@ -337,16 +370,23 @@ def alterarListaP2P(driver):
         '//*[@id="datatabled"]/tbody/tr[1]/td[10]/div/div/a[2]').click()
 
 def setAtendido(i):
-    setAtendido = gc.open(
-        "Solicitação de teste RoyalPlace (Respostas)").worksheet(NomeAba)
-    coord = 'E'+str(i+2)
-    setAtendido.update_acell(coord, 'sim')
+    try:
+        setAtendido = gc.open(
+                "Solicitação de teste RoyalPlace (Respostas)").worksheet(NomeAba)
+        coord = 'E'+str(i+2)
+        setAtendido.update_acell(coord, 'sim')
+    except:
+        print('Falha ao imprimir atendimento')
+        setAtendido(i)
 
 def setErroDeAtendido(i):
-    setAtendido = gc.open(
-        "Solicitação de teste RoyalPlace (Respostas)").worksheet(NomeAba)
-    coord = 'E'+str(i+2)
-    setAtendido.update_acell(coord, 'erro')
+    try:
+        setAtendido = gc.open(
+            "Solicitação de teste RoyalPlace (Respostas)").worksheet(NomeAba)
+        coord = 'E'+str(i+2)
+        setAtendido.update_acell(coord, 'erro')
+    except:
+        print('Falha ao tentar imprimir erro de atendimento')
 
 def application(ultimoCliente):
     try:
@@ -591,15 +631,18 @@ senha = str(input("Senha vendedor: "))
 
 validar = validar(login, senha, dfVendedores)
 
-UserAndPass = validar[0]
-ExpireDate = validar[2]
-Business = validar[3].title()
-Name = validar[4].title()
-Online = validar[5]
-id = validar[6]
-macSeller = validar[7]
-# print(macSeller)
-telefoneVendedor = validar[8]
+try:
+    UserAndPass = validar[0]
+    ExpireDate = validar[2]
+    Business = validar[3].title()
+    Name = validar[4].title()
+    Online = validar[5]
+    id = validar[6]
+    macSeller = validar[7]
+    # print(macSeller)
+    telefoneVendedor = validar[8]
+except:
+    print('Favor conferir a conexão de internet!')
 
 macAddress = gma()
 
@@ -620,12 +663,6 @@ def desconectarConta(id):
     plVendedores.update_acell(coord, 'não')
 
 def horas():
-    # day = 
-    # month = 
-    # hour = time.strftime('%H', time.localtime())
-    # minute = time.strftime('%M', time.localtime())
-    # seconds = time.strftime('%M', time.localtime())
-
     horas = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
     return horas
 
