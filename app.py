@@ -87,8 +87,9 @@ def validar(login, senha, dfVendedores):
                     estado = dfVendedores['Estado'][id]
                     print(estado)
                     macSeller = dfVendedores['Mac'][id]
+                    telefoneVendedor = dfVendedores['Telefone'][id]
                     validar = "valido"
-                    return validar, estado, ExpireDate, Business, user, Online, id, macSeller
+                    return validar, estado, ExpireDate, Business, user, Online, id, macSeller, telefoneVendedor
                 else:
                     #print("Senha inválida")
                     validar = "invalido"
@@ -201,6 +202,14 @@ def dadosFive(texto):
     # print(texto)
     return texto
 
+def enviarVendedor():
+    try:
+        driver2.find_element_by_class_name("_4sWnG").click()
+    except:
+        time.sleep(2)
+        enviarVendedor()
+        print("Não foi possível enviar a mensagem ao revendedor!")
+
 def criarTesteFive():
     try:
         horarioTeste = obterHora()
@@ -230,6 +239,11 @@ def criarTesteFive():
             time.sleep(2)
             
         except:
+            mensagem = Name + ', verifique se o painel Five se encontra online'
+            contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
+            driver2.get(contatoVendedor)
+            time.sleep(5)
+            enviarVendedor()
             loginFive(driver)
             application(ultimoCliente)
             criarTesteFive()
@@ -543,7 +557,7 @@ def application(ultimoCliente):
                                   telefone, dfClientes.iloc[i]["Nome"])
                             print("---------------------")
                     
-                time.sleep(30)
+                time.sleep(10)
                 application(ultimoCliente)
             else:
                 print("Sua assinatura expirou! Contate o suporte.")
@@ -583,6 +597,7 @@ Online = validar[5]
 id = validar[6]
 macSeller = validar[7]
 # print(macSeller)
+telefoneVendedor = validar[8]
 
 macAddress = gma()
 
