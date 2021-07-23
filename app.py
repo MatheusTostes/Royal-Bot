@@ -7,6 +7,7 @@ import gspread
 import time
 import pandas as pd
 import pyautogui
+from datetime import datetime
 
 print("========================== RP Bot ==========================")
 
@@ -205,6 +206,7 @@ def dadosFive(texto):
 def enviarVendedor():
     try:
         driver2.find_element_by_class_name("_4sWnG").click()
+        time.sleep(5)
     except:
         time.sleep(2)
         enviarVendedor()
@@ -420,7 +422,7 @@ def application(ultimoCliente):
                             # print('textoCliente: ', textoCliente)
                             print("--criado teste do cliente")
 
-                            nome = dfClientes.iloc[i]["Nome"]
+                            nome = str(dfClientes.iloc[i]["Nome"])
                             try:
                                 nome = nome.capitalize()
                             except:
@@ -618,10 +620,13 @@ def desconectarConta(id):
     plVendedores.update_acell(coord, 'não')
 
 def horas():
-    hour = time.strftime('%H', time.localtime())
-    minute = time.strftime('%M', time.localtime())
-    seconds = time.strftime('%M', time.localtime())
-    horas = str(hour) + ":" + str(minute) + ":" + str(seconds)
+    # day = 
+    # month = 
+    # hour = time.strftime('%H', time.localtime())
+    # minute = time.strftime('%M', time.localtime())
+    # seconds = time.strftime('%M', time.localtime())
+
+    horas = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
     return horas
 
 def conectarConta(id):
