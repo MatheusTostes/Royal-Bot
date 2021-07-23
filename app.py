@@ -6,6 +6,8 @@ from google.oauth2 import service_account
 import gspread
 import time
 import pandas as pd
+from fake_useragent import UserAgent
+
 print("========================== RP Bot ==========================")
 
 versionAtual = '1.1.6'
@@ -137,19 +139,37 @@ def abrirWhats():
 
 def loginFive(driver):
     try:
-        driver.find_element_by_name('username').send_keys("matheustostes")
-        driver.find_element_by_name('password').send_keys('Matheus123')
-        driver.find_element_by_xpath(
-            '//*[@id="root"]/div/div/div/div/div/div/div/div/form/div[4]/div/button').click()
+        print("Atualize a pagina do painel e aguarde a tela de Login")
+        f = open('fiveLP.txt', 'r')
+        fiveLogin = f.readline()
+        fivePwd  = f.readline()
+        if len(fiveLogin) < 1:
+            fiveLogin = input("Digite o login da five: ")
+            fivePwd = input("Digite a senha da five: ")
+            f = open('fiveLP.txt', 'w')
+            conteudo = [fiveLogin + '\n' + fivePwd]
+            f.writelines(conteudo)
+        print('fiveLogin:', fiveLogin)
+        print('fivePwd:', fivePwd)
+        #f.close('fiveLP.txt')
+
         time.sleep(1)
     except Exception as e:
         print(e)
-        input("Verifique a tela de login do painel")
-        loginFive(driver)
+    # input("Verifique a tela de login do painel")""
+        # loginFive(driver)
         pass
+
+    driver.find_element_by_name('username').send_keys(fiveLogin.strip())
+    driver.find_element_by_name('password').send_keys(fivePwd.strip())
+    driver.find_element_by_xpath('//*[@id="root"]/div/div/div/div/div/div/div/div/form/div[4]/div/button').click()
 
 def abrirFive():
     options = webdriver.ChromeOptions()
+    # ua = UserAgent()
+    # userAgent = ua.random
+    # print(userAgent)    
+    # options.add_argument(f'user-agent={userAgent}')
     options.add_argument(userDataDir2)
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -158,9 +178,9 @@ def abrirFive():
     driver.get("http://painel.c-pro.site/auth/sign-in")
     time.sleep(1)
 
-    input("Pressione ENTER após entrar em seu painel Five")
+    input("Pressione ENTER quando a Five estiver na tela de login")
 
-    # loginFive(driver)
+    loginFive(driver)
     return driver
 
 pathChrome = location + "\\data\\chromedriver.exe"
@@ -181,22 +201,25 @@ def criarTesteFive():
         hour = horarioTeste[1]
         minute = horarioTeste[2]
         seconds = horarioTeste[3]
-
-        driver.get("http://painel.c-pro.site/users/add_trial")
-        time.sleep(2)
-        driver.find_element_by_xpath(
-            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
-        driver.find_element_by_xpath(
-            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("p2pgold")
-        time.sleep(1)
-        driver.find_element_by_xpath(
-            '//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)
-        time.sleep(1)
-        driver.find_element_by_xpath(
-            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[2]/div/button[2]').click()
-        time.sleep(2)
-        print("Capturando dados")
-        texto = driver.find_element_by_id('swal2-content').text
+        try:
+            driver.get("http://painel.c-pro.site/users/add_trial")
+            time.sleep(2)
+            driver.find_element_by_xpath(
+                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
+            driver.find_element_by_xpath(
+                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("p2pgold")
+            time.sleep(1)
+            driver.find_element_by_xpath(
+                '//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)
+            time.sleep(1)
+            driver.find_element_by_xpath(
+                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[2]/div/button[2]').click()
+            time.sleep(2)
+            print("Capturando dados")
+            texto = driver.find_element_by_id('swal2-content').text
+        except:
+            loginFive(driver)
+            criarTesteFive()
         # print(texto)
         if 'username' not in texto and 'Senha' not in texto:
             criarTesteFive()
@@ -348,7 +371,7 @@ def application(ultimoCliente):
                         print("------Cliente:"+str(i)+"------")
                         
                         # chamar função pra preencher coluna com sim no id+2
-                        setAtendido(i)
+                        #setErroDeAtendido(i)
                         telefone = str(dfClientes.iloc[i][numeroWhats])
                         telefone = telefone.replace("+", "")
                         telefone = telefone.replace(" ", "")
@@ -386,6 +409,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -400,6 +424,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -414,6 +439,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -427,6 +453,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -441,6 +468,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -452,11 +480,12 @@ def application(ultimoCliente):
                                 print(nome, aplicativo)
 
                                 mensagem = 'Olá *' + nome + '*! %0aO aplicativo indicado pra utilizar no seu *Chromecast* é o *GSE IPTV*, siga o passo a passo pra ativar o seu sinal de teste grátis! %0a%0a*Passo 1:* Abra o aplicativo *Chromecast* e adicione uma nova lista com os dados a seguir: %0a*Playlist Name:* Royal Place - GOLD %0a*Description:* Teste %0a*http://...:* ' + \
-                                    textoCliente[4] + ' %0a*Pressione OK* %0a*Passo 2:* Selecione a nova lista e aguarde o carregamento. %0a*passo 3:* Conecte o celular à televisão %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' + dataEndTest + '*'
+                                    textoCliente[4] + ' %0a*Pressione OK* %0a*Passo 2:* Selecione a nova lista e aguarde o carregamento. %0a*Passo 3:* Conecte o celular à televisão %0a%0aCaso tenha dúvidas responda a essa mensagem e aguarde um de nossos atendentes entrar em contato! %0a%0aO Seu teste acaba às: *' + dataEndTest + '*'
                                 mensagem = mensagem.replace(" ", "+")
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -472,6 +501,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -486,6 +516,7 @@ def application(ultimoCliente):
                                 try:
                                     mensagemPadrao(i, mensagem, telefone)
                                     time.sleep(3)
+                                    setAtendido(i)
                                 except:
                                     print("Erro ao enviar mensagem Padrao")
 
@@ -496,7 +527,7 @@ def application(ultimoCliente):
                             print("Número de telefone inválido: ",
                                   telefone, dfClientes.iloc[i]["Nome"])
                             print("---------------------")
- 
+                    
                 time.sleep(30)
                 application(ultimoCliente)
             else:
@@ -614,7 +645,10 @@ if UserAndPass == "valido":
                 #dfClientes = receberClientes(planilha, NomeAba)
                 iniciar = iniciar()
                 driver = iniciar[0]
+                # loginFive(driver)
+                input()
                 driver2 = iniciar[1]
+                
                 guardarVersao(id)
                 application(ultimoCliente)
             else:
@@ -630,6 +664,8 @@ if UserAndPass == "valido":
                     #dfClientes = receberClientes(planilha, NomeAba)
                     iniciar = iniciar()
                     driver = iniciar[0]
+                    # loginFive(driver)
+                    input('aasdasd')
                     driver2 = iniciar[1]
                     application(ultimoCliente)
                 else:
