@@ -6,11 +6,11 @@ from google.oauth2 import service_account
 import gspread
 import time
 import pandas as pd
-from fake_useragent import UserAgent
+import pyautogui
 
 print("========================== RP Bot ==========================")
 
-versionAtual = '1.1.6'
+versionAtual = '1.1.7'
 
 location = os.getcwd()
 print(location)
@@ -19,6 +19,10 @@ pathCredentials = location + "\\data\\credentials.json"
 scopes = ["https://www.googleapis.com/auth/spreadsheets",
           "https://www.googleapis.com/auth/drive"]
 json_file = pathCredentials
+
+def screenshotError():
+    capturar = pyautogui.screenshot()
+    capturar.save('erro.png')
 
 def login():
     print("Logando no banco de dados")
@@ -152,35 +156,37 @@ def loginFive(driver):
         print('fiveLogin:', fiveLogin)
         print('fivePwd:', fivePwd)
         #f.close('fiveLP.txt')
+        
+        driver.find_element_by_name('username').send_keys(fiveLogin.strip())
+        driver.find_element_by_name('password').send_keys(fivePwd.strip())
+        driver.find_element_by_xpath('//*[@id="root"]/div/div/div/div/div/div/div/div/form/div[4]/div/button').click()
 
         time.sleep(1)
     except Exception as e:
-        print(e)
+        # print(e)
+        screenshotError()
     # input("Verifique a tela de login do painel")""
         # loginFive(driver)
         pass
 
-    driver.find_element_by_name('username').send_keys(fiveLogin.strip())
-    driver.find_element_by_name('password').send_keys(fivePwd.strip())
-    driver.find_element_by_xpath('//*[@id="root"]/div/div/div/div/div/div/div/div/form/div[4]/div/button').click()
-
 def abrirFive():
-    options = webdriver.ChromeOptions()
-    # ua = UserAgent()
-    # userAgent = ua.random
-    # print(userAgent)    
-    # options.add_argument(f'user-agent={userAgent}')
-    options.add_argument(userDataDir2)
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    try:
+        options = webdriver.ChromeOptions()
+        # ua = UserAgent()
+        # userAgent = ua.random
+        # print(userAgent)    
+        # options.add_argument(f'user-agent={userAgent}')
+        options.add_argument(userDataDir2)
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-    driver = webdriver.Chrome(pathChrome2, options=options)
-    driver.get("http://painel.c-pro.site/auth/sign-in")
-    time.sleep(1)
-
-    input("Pressione ENTER quando a Five estiver na tela de login")
-
-    loginFive(driver)
+        driver = webdriver.Chrome(pathChrome2, options=options)
+        driver.get("http://painel.c-pro.site/auth/sign-in")
+        time.sleep(1)
+        input("Pressione ENTER quando a Five estiver na tela de login")
+        loginFive(driver)
+    except:
+        screenshotError()
     return driver
 
 pathChrome = location + "\\data\\chromedriver.exe"
@@ -217,13 +223,18 @@ def criarTesteFive():
             time.sleep(2)
             print("Capturando dados")
             texto = driver.find_element_by_id('swal2-content').text
+
+            if 'username' not in texto and 'Senha' not in texto:
+                criarTesteFive()
+
+            time.sleep(2)
+            
         except:
             loginFive(driver)
+            application(ultimoCliente)
             criarTesteFive()
         # print(texto)
-        if 'username' not in texto and 'Senha' not in texto:
-            criarTesteFive()
-        time.sleep(2)
+        
         textoCliente = dadosFive(texto)
         linkM3U = "http://5ce.co/get.php?username=" + \
             textoCliente[0]+"%26password="+textoCliente[1] + \
@@ -387,7 +398,11 @@ def application(ultimoCliente):
                             horarioTeste = obterHora()
                             dataEndTest = horarioTeste[0]
 
-                            textoCliente = criarTesteFive()
+                            try:
+                                textoCliente = criarTesteFive()
+                            except Exception as e:
+                                print (e)
+                                pass
                             # print('textoCliente: ', textoCliente)
                             print("--criado teste do cliente")
 
@@ -661,11 +676,8 @@ if UserAndPass == "valido":
                     horas = horas()
                     conectarConta(id)
                     NomeAba = obterNomeAba(id)
-                    #dfClientes = receberClientes(planilha, NomeAba)
                     iniciar = iniciar()
                     driver = iniciar[0]
-                    # loginFive(driver)
-                    input('aasdasd')
                     driver2 = iniciar[1]
                     application(ultimoCliente)
                 else:
