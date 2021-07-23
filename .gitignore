@@ -1,15 +1,13 @@
 
 build/
-data/
 __pycache__/
 dist/
+data/
 geckodriver.log
 upx-3.96-win64/
-*.exe
 estudo/
 .vscode/
 app.spec
 appV0.py
-fiveLP.txt
 testeLogin.py
 erro.png
