@@ -11,7 +11,7 @@ from datetime import datetime
 
 print("========================== RP Bot ==========================")
 
-versionAtual = '1.1.8'
+versionAtual = '1.1.9'
 
 location = os.getcwd()
 print(location)
@@ -42,8 +42,6 @@ def login():
         print(e)
         time.sleep(3)
         login()
-
- 
 
 funcLogin = login()
 planilha = funcLogin[0]
@@ -144,7 +142,6 @@ def abrirWhats():
 
         driver2 = webdriver.Chrome(pathChrome, options=options)
         driver2.get("https://web.whatsapp.com/")
-        # driver2.maximize_window()
         return driver2
     except:
         print("Não foi possível abrir o WhatsApp Web, tentando novamente!")
@@ -193,7 +190,7 @@ def abrirFive():
         driver = webdriver.Chrome(pathChrome2, options=options)
         driver.get("http://painel.c-pro.site/auth/sign-in")
         time.sleep(1)
-        input("Pressione ENTER quando a Five estiver na tela de login")
+        # input("Pressione ENTER quando a Five estiver na tela de login")
         loginFive(driver)
     except:
         screenshotError()
@@ -213,28 +210,31 @@ def dadosFive(texto):
 
 def enviarVendedor():
     try:
-        driver2.maximize_window();time.sleep(0.2)
+        driver2.set_window_size(5, 400);time.sleep(0.2);time.sleep(0.2)
         driver2.find_element_by_class_name("_4sWnG").click()
         driver2.minimize_window()
         time.sleep(5)
     except:
         time.sleep(2)
-        enviarVendedor()
         print("Não foi possível enviar a mensagem ao revendedor!")
+        enviarVendedor()
 
 def relogFive():
     try:
-        driver.maximize_window();time.sleep(0.5)
+        driver.set_window_size(5, 400);time.sleep(0.5)
         pyautogui.keyDown('alt')
-        pyautogui.press('d')
-        pyautogui.press('enter')
+        pyautogui.keyDown('d')
+        pyautogui.keyUp('d')
+        pyautogui.keyDown('enter')
+        pyautogui.keyUp('enter')
         pyautogui.keyUp('alt');time.sleep(0.5)
         driver.minimize_window()
         time.sleep(8)
-        driver.maximize_window();time.sleep(0.5)
+        driver.set_window_size(5, 400);time.sleep(0.5)
         pyautogui.keyDown('ctrl')
-        pyautogui.press('w')
-        pyautogui.press('ctrl');time.sleep(0.5)
+        pyautogui.keyDown('w')
+        pyautogui.keyUp('w')
+        pyautogui.keyUp('ctrl');time.sleep(0.5)
         driver.minimize_window()
     except:
         pass
@@ -270,7 +270,7 @@ def criarTesteFive():
         except:
             mensagem = Name + ', verifique se o painel Five se encontra online'
             contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
-            driver2.maximize_window();time.sleep(0.2)
+            driver2.set_window_size(5, 400);time.sleep(0.2)
             driver2.get(contatoVendedor)
             driver2.minimize_window()
             time.sleep(5)
@@ -303,7 +303,7 @@ def criarTesteFive():
 def enviar(i):
     print("Enviando mensagem")
     try:
-        driver2.maximize_window();time.sleep(0.2)
+        driver2.set_window_size(5, 400);time.sleep(0.2)
         driver2.find_element_by_class_name("_4sWnG").click()
         driver2.minimize_window()
     except:
@@ -360,14 +360,11 @@ def definirUltCliente(ultimoCliente, i):
     return ultimoCliente
 
 def alterarListaP2P(driver):
-    driver.find_element_by_xpath(
-        '/html/body/div[2]/div/div[3]/button[1]').click()
-    time.sleep(2)
-    driver.find_element_by_xpath(
-        '//*[@id="datatabled"]/tbody/tr[1]/td[10]/div/button[2]/i').click()
-    time.sleep(2)
-    driver.find_element_by_xpath(
-        '//*[@id="datatabled"]/tbody/tr[1]/td[10]/div/div/a[2]').click()
+    driver.maximize_window();time.sleep(1)
+    driver.find_element_by_xpath('/html/body/div[2]/div/div[3]/button[1]').click();time.sleep(2)
+    driver.find_element_by_xpath('//*[@id="datatabled"]/tbody/tr[1]/td[10]/div/button[2]/i').click();time.sleep(2)
+    driver.find_element_by_xpath('//*[@id="datatabled"]/tbody/tr[1]/td[10]/div/div/a[2]').click();time.sleep(1)
+    driver.minimize_window()
 
 def setAtendido(i):
     try:
@@ -605,6 +602,8 @@ def application(ultimoCliente):
                 print("Sua assinatura expirou! Contate o suporte.")
         else:
             print("A sua conta foi acessada em outra sessão")
+            input("Pressione ENTER para finalizar a aplicação")
+            quit()
     except Exception as e:
         print("Confira sua conexão com a internet e contate o suporte técnico!")
         print(e)
@@ -677,11 +676,8 @@ def conectarConta(id):
 def iniciar():
     print("bem-vindo " + Name + " ("+Business+")")
     print("Assinatura expira em: ", ExpireDate)
-    driver = abrirFive()
-    driver2 = abrirWhats()
-    input("Aperte ENTER caso o whatsapp já esteja na tela de conversas!")
 
-    return driver, driver2
+    return 
 
 def obterNomeAba(id):
     NomeAba = dfVendedores["NomeAba"][id]
@@ -714,13 +710,12 @@ if UserAndPass == "valido":
                 print(horas)
                 conectarConta(id)
                 NomeAba = obterNomeAba(id)
-                #dfClientes = receberClientes(planilha, NomeAba)
-                iniciar = iniciar()
-                driver = iniciar[0]
-                # loginFive(driver)
-                input()
-                driver2 = iniciar[1]
-                
+                iniciar = iniciar()                    
+                driver = abrirFive()
+                driver.minimize_window()
+                driver2 = abrirWhats()
+                input("Aperte ENTER caso o whatsapp já esteja na tela de conversas!")              
+                driver2.minimize_window()
                 guardarVersao(id)
                 application(ultimoCliente)
             else:
@@ -733,9 +728,12 @@ if UserAndPass == "valido":
                     horas = horas()
                     conectarConta(id)
                     NomeAba = obterNomeAba(id)
-                    iniciar = iniciar()
-                    driver = iniciar[0]
-                    driver2 = iniciar[1]
+                    iniciar = iniciar()                    
+                    driver = abrirFive()
+                    driver.minimize_window()
+                    driver2 = abrirWhats()
+                    input("Aperte ENTER caso o whatsapp já esteja na tela de conversas!")              
+                    driver2.minimize_window()
                     application(ultimoCliente)
                 else:
                     print("Não é possível executar duas sessões na mesma conta!")
