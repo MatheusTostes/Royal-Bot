@@ -7,6 +7,7 @@ import gspread
 import time
 import pandas as pd
 import pyautogui
+import pyimgur
 from datetime import datetime
 
 print("========================== RP Bot ==========================")
@@ -21,11 +22,49 @@ scopes = ["https://www.googleapis.com/auth/spreadsheets",
           "https://www.googleapis.com/auth/drive"]
 json_file = pathCredentials
 
-def screenshotError():
+def screenshotError(driv):
     try:
         capturar = pyautogui.screenshot()
-        capturar.save('erro.png')
-    except:
+        capturar.save(driv + '.png')
+    except Exception as e:
+        print(e)
+        pass
+
+def uploadImageError(driver, driver2, e):
+    print('Enviando mensagem ao suporte')
+    driver.maximize_window()
+    screenshotError('driver')
+    driver2.maximize_window()
+    screenshotError('driver2')
+    driver.minimize_window()
+    screenshotError('driver')
+    driver2.minimize_window()
+    screenshotError('cmd')
+    try:
+        CLIENT_ID = "dc06c295e751ce1"
+        PATH = "driver.png"
+        im = pyimgur.Imgur(CLIENT_ID)
+        uploaded_image = im.upload_image(PATH, title="name_any")
+        link = uploaded_image.link
+        PATH = "driver2.png"
+        im2 = pyimgur.Imgur(CLIENT_ID)
+        uploaded_image2 = im2.upload_image(PATH, title="name_any")
+        link2 = uploaded_image2.link
+        PATH = "cmd.png"
+        im3 = pyimgur.Imgur(CLIENT_ID)
+        uploaded_image3 = im3.upload_image(PATH, title="name_any")
+        link3 = uploaded_image3.link
+        mensagem = 'Erro: ' + str(e) + "Prints: " + link + " - " + link2 + " - " + link3 
+        contatoSuporte = 'https://web.whatsapp.com/send?phone=55' + str(27998851973) + '&text=' + mensagem
+        driver2.set_window_size(5, 400);time.sleep(0.2)
+        driver2.get(contatoSuporte)
+        driver2.minimize_window()
+        time.sleep(5)
+        enviarVendedor()
+        #print(link)
+        #return link
+    except Exception as e:
+        print(e)
         pass
 
 def login():
@@ -150,7 +189,7 @@ def abrirWhats():
     
 def loginFive(driver):
     try:
-        print("Atualize a pagina do painel e aguarde a tela de Login")
+        # print("Atualize a pagina do painel e aguarde a tela de Login")
         f = open('fiveLP.txt', 'r')
         fiveLogin = f.readline()
         fivePwd  = f.readline()
@@ -170,8 +209,8 @@ def loginFive(driver):
 
         time.sleep(1)
     except Exception as e:
-        # print(e)
-        screenshotError()
+        # screenshotError(driver1)
+        uploadImageError(driver, driver2, e)
     # input("Verifique a tela de login do painel")""
         # loginFive(driver)
         pass
@@ -192,8 +231,10 @@ def abrirFive():
         time.sleep(1)
         # input("Pressione ENTER quando a Five estiver na tela de login")
         loginFive(driver)
-    except:
-        screenshotError()
+    except Exception as e:
+        print(e)
+        # screenshotError()
+        pass
     return driver
 
 pathChrome = location + "\\data\\chromedriver.exe"
@@ -220,20 +261,26 @@ def enviarVendedor():
         enviarVendedor()
 
 def relogFive():
+    print("Relogando na Five")
     try:
-        driver.set_window_size(5, 400);time.sleep(0.5)
-        pyautogui.keyDown('alt')
-        pyautogui.keyDown('d')
-        pyautogui.keyUp('d')
-        pyautogui.keyDown('enter')
-        pyautogui.keyUp('enter')
+        driver.set_window_size(5, 400);time.sleep(1)
+        print("Bypass cloudflare")
+        driver.set_window_size(5, 400);time.sleep(0.3)
+        pyautogui.keyDown('alt');time.sleep(0.5)
+        pyautogui.keyDown('d');time.sleep(0.5)
+        pyautogui.keyUp('d');time.sleep(0.5)
+        pyautogui.keyUp('alt');time.sleep(0.5)
+        pyautogui.keyDown('alt');time.sleep(0.5)
+        pyautogui.keyDown('enter');time.sleep(0.5)
+        pyautogui.keyUp('enter');time.sleep(0.5)
         pyautogui.keyUp('alt');time.sleep(0.5)
         driver.minimize_window()
         time.sleep(8)
-        driver.set_window_size(5, 400);time.sleep(0.5)
-        pyautogui.keyDown('ctrl')
-        pyautogui.keyDown('w')
-        pyautogui.keyUp('w')
+        driver.set_window_size(5, 400);time.sleep(1)
+        driver.set_window_size(5, 400);time.sleep(0.3)
+        pyautogui.keyDown('ctrl');time.sleep(0.5)
+        pyautogui.keyDown('w');time.sleep(0.5)
+        pyautogui.keyUp('w');time.sleep(0.5)
         pyautogui.keyUp('ctrl');time.sleep(0.5)
         driver.minimize_window()
     except:
@@ -267,8 +314,9 @@ def criarTesteFive():
 
             time.sleep(2)
             
-        except:
+        except Exception as e:
             mensagem = Name + ', verifique se o painel Five se encontra online'
+            uploadImageError(driver, driver2, e)
             contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
             driver2.set_window_size(5, 400);time.sleep(0.2)
             driver2.get(contatoVendedor)
@@ -277,7 +325,7 @@ def criarTesteFive():
             enviarVendedor()
             relogFive()
             loginFive(driver)
-            application(ultimoCliente)
+            # application(ultimoCliente)
             criarTesteFive()
         # print(texto)
         
