@@ -1,3 +1,7 @@
+print("========================== RP Bot ==========================")
+
+versionAtual = '1.1.9'
+
 import os
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
@@ -10,9 +14,9 @@ import pyautogui
 import pyimgur
 from datetime import datetime
 
-print("========================== RP Bot ==========================")
+input("Para a inicialização do bot todas as janelas do chrome serão finalizadas. Pressione ENTER para prosseguir.")
 
-versionAtual = '1.1.9'
+os.system("taskkill /im chrome.exe")
 
 location = os.getcwd()
 print(location)
@@ -230,6 +234,24 @@ def abrirFive():
         driver.get("http://painel.c-pro.site/auth/sign-in")
         time.sleep(1)
         # input("Pressione ENTER quando a Five estiver na tela de login")
+        print("Bypass cloudflare")
+        # driver.set_window_size(5, 400);time.sleep(0.3)
+        driver.maximize_window();time.sleep(1)
+        pyautogui.keyDown('alt');time.sleep(0.5)
+        pyautogui.press('d')
+        pyautogui.press('enter')
+        pyautogui.keyUp('alt');time.sleep(0.5)
+        driver.minimize_window()
+        time.sleep(8)
+        # driver.set_window_size(5, 400);time.sleep(1)
+        # driver.set_window_size(5, 400);time.sleep(0.3)
+        driver.maximize_window();time.sleep(0.5)
+        pyautogui.keyDown('ctrl');time.sleep(0.5)
+        pyautogui.keyDown('w');time.sleep(0.5)
+        pyautogui.keyUp('w');time.sleep(0.5)
+        pyautogui.keyUp('ctrl');time.sleep(0.5)
+        driver.minimize_window()
+
         loginFive(driver)
     except Exception as e:
         print(e)
@@ -260,24 +282,24 @@ def enviarVendedor():
         print("Não foi possível enviar a mensagem ao revendedor!")
         enviarVendedor()
 
-def relogFive():
+def relogFive(driver):
     print("Relogando na Five")
     try:
-        driver.set_window_size(5, 400);time.sleep(1)
+        driver.close()
+        driver = abrirFive();time.sleep(0.3)
+        # driver.set_window_size(5, 400);time.sleep(1)
         print("Bypass cloudflare")
-        driver.set_window_size(5, 400);time.sleep(0.3)
+        # driver.set_window_size(5, 400);time.sleep(0.3)
+        driver.maximize_window();time.sleep(1)
         pyautogui.keyDown('alt');time.sleep(0.5)
-        pyautogui.keyDown('d');time.sleep(0.5)
-        pyautogui.keyUp('d');time.sleep(0.5)
-        pyautogui.keyUp('alt');time.sleep(0.5)
-        pyautogui.keyDown('alt');time.sleep(0.5)
-        pyautogui.keyDown('enter');time.sleep(0.5)
-        pyautogui.keyUp('enter');time.sleep(0.5)
+        pyautogui.press('d')
+        pyautogui.press('enter')
         pyautogui.keyUp('alt');time.sleep(0.5)
         driver.minimize_window()
         time.sleep(8)
-        driver.set_window_size(5, 400);time.sleep(1)
-        driver.set_window_size(5, 400);time.sleep(0.3)
+        # driver.set_window_size(5, 400);time.sleep(1)
+        # driver.set_window_size(5, 400);time.sleep(0.3)
+        driver.maximize_window();time.sleep(0.5)
         pyautogui.keyDown('ctrl');time.sleep(0.5)
         pyautogui.keyDown('w');time.sleep(0.5)
         pyautogui.keyUp('w');time.sleep(0.5)
@@ -286,7 +308,7 @@ def relogFive():
     except:
         pass
 
-def criarTesteFive():
+def criarTesteFive(driver):
     try:
         horarioTeste = obterHora()
         hour = horarioTeste[1]
@@ -310,7 +332,7 @@ def criarTesteFive():
             texto = driver.find_element_by_id('swal2-content').text
 
             if 'username' not in texto and 'Senha' not in texto:
-                criarTesteFive()
+                criarTesteFive(driver)
 
             time.sleep(2)
             
@@ -323,10 +345,10 @@ def criarTesteFive():
             driver2.minimize_window()
             time.sleep(5)
             enviarVendedor()
-            relogFive()
-            loginFive(driver)
+            driver.close()
+            driver = abrirFive()
             # application(ultimoCliente)
-            criarTesteFive()
+            criarTesteFive(driver)
         # print(texto)
         
         textoCliente = dadosFive(texto)
@@ -345,7 +367,7 @@ def criarTesteFive():
     except Exception as e:
         print(e)
         time.sleep(2)
-        criarTesteFive()
+        criarTesteFive(driver)
     return textoCliente
 
 def enviar(i):
@@ -369,7 +391,6 @@ def enviar(i):
             pass
 
         time.sleep(3)
-        print('estou chegando aqui')
         enviar(i)
 
 def mensagemPadrao(i, mensagem, telefone):
@@ -500,7 +521,7 @@ def application(ultimoCliente):
                             dataEndTest = horarioTeste[0]
 
                             try:
-                                textoCliente = criarTesteFive()
+                                textoCliente = criarTesteFive(driver)
                             except Exception as e:
                                 print (e)
                                 pass
@@ -644,7 +665,7 @@ def application(ultimoCliente):
                                   telefone, dfClientes.iloc[i]["Nome"])
                             print("---------------------")
                     
-                time.sleep(10)
+                time.sleep(30)
                 application(ultimoCliente)
             else:
                 print("Sua assinatura expirou! Contate o suporte.")
