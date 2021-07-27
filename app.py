@@ -276,7 +276,7 @@ def enviarVendedor():
         driver2.set_window_size(5, 400);time.sleep(0.2);time.sleep(0.2)
         driver2.find_element_by_class_name("_4sWnG").click()
         driver2.minimize_window()
-        time.sleep(5)
+        time.sleep(2)
     except:
         time.sleep(2)
         print("Não foi possível enviar a mensagem ao revendedor!")
@@ -309,48 +309,32 @@ def relogFive(driver):
         pass
 
 def criarTesteFive(driver):
+    horarioTeste = obterHora()
+    hour = horarioTeste[1]
+    minute = horarioTeste[2]
+    seconds = horarioTeste[3]
     try:
-        horarioTeste = obterHora()
-        hour = horarioTeste[1]
-        minute = horarioTeste[2]
-        seconds = horarioTeste[3]
-        try:
-            driver.get("http://painel.c-pro.site/users/add_trial")
-            time.sleep(2)
-            driver.find_element_by_xpath(
-                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
-            driver.find_element_by_xpath(
-                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("p2pgold")
-            time.sleep(1)
-            driver.find_element_by_xpath(
-                '//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)
-            time.sleep(1)
-            driver.find_element_by_xpath(
-                '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[2]/div/button[2]').click()
-            time.sleep(2)
-            print("Capturando dados")
-            texto = driver.find_element_by_id('swal2-content').text
+        driver.get("http://painel.c-pro.site/users/add_trial")
+        time.sleep(2)
+        driver.find_element_by_xpath(
+            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[1]/input').send_keys("rp"+hour+minute+seconds)
+        driver.find_element_by_xpath(
+            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[1]/div[2]/input').send_keys("p2pgold")
+        time.sleep(1)
+        driver.find_element_by_xpath(
+            '//*[@id="react-select-2-input"]').send_keys("TESTE 6H COMPLETO", Keys.ENTER)
+        time.sleep(1)
+        driver.find_element_by_xpath(
+            '//*[@id="root"]/div/div/div[3]/div[2]/div/div/div/div/div/form/div[2]/div/button[2]').click()
+        time.sleep(2)
+        print("Capturando dados")
+        texto = driver.find_element_by_id('swal2-content').text
 
-            if 'username' not in texto and 'Senha' not in texto:
-                criarTesteFive(driver)
-
-            time.sleep(2)
-            
-        except Exception as e:
-            mensagem = Name + ', verifique se o painel Five se encontra online'
-            uploadImageError(driver, driver2, e)
-            contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
-            driver2.set_window_size(5, 400);time.sleep(0.2)
-            driver2.get(contatoVendedor)
-            driver2.minimize_window()
-            time.sleep(5)
-            enviarVendedor()
-            driver.close()
-            driver = abrirFive()
-            # application(ultimoCliente)
+        if 'username' not in texto and 'Senha' not in texto:
             criarTesteFive(driver)
-        # print(texto)
-        
+
+        time.sleep(2)
+    
         textoCliente = dadosFive(texto)
         linkM3U = "http://5ce.co/get.php?username=" + \
             textoCliente[0]+"%26password="+textoCliente[1] + \
@@ -364,11 +348,21 @@ def criarTesteFive(driver):
         textoCliente.append(linkM3U)
         textoCliente.append(linkSSIPTV)
         textoCliente.append(linkHLS)
+        return textoCliente
+
     except Exception as e:
-        print(e)
-        time.sleep(2)
+        mensagem = Name + ', verifique se o painel Five se encontra online'
+        uploadImageError(driver, driver2, e)
+        contatoVendedor = 'https://web.whatsapp.com/send?phone=55' + str(telefoneVendedor) + '&text=' + mensagem
+        driver2.set_window_size(5, 400);time.sleep(0.2)
+        driver2.get(contatoVendedor)
+        driver2.minimize_window()
+        time.sleep(5)
+        enviarVendedor()
+        driver.close()
+        driver = abrirFive()
+        # application(ultimoCliente)
         criarTesteFive(driver)
-    return textoCliente
 
 def enviar(i):
     print("Enviando mensagem")
