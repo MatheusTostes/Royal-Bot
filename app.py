@@ -701,7 +701,6 @@ try:
     Online = validar[5]
     id = validar[6]
     macSeller = validar[7]
-    # print(macSeller)
     telefoneVendedor = validar[8]
 except:
     print('Favor conferir a conexão de internet!')
