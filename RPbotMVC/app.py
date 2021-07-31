@@ -21,11 +21,12 @@ class application():
         horas = HourLogin()
         valid, state, ExpireDate, Business, user, Online, id, macSeller, phoneSeller = SellerData(
             login, password, dfSellers)
-        x = ValidSeller(valid, state, macSeller, Online, user, Business, ExpireDate, gc)
+        sellerTab = ValidSeller(valid, state, macSeller, Online, user, Business, ExpireDate, gc, dfSellers)
         SetVersion(id, gc)
 
-        print(x)
-        # GetClients(planilha, NomeAba)
+        # print(sellerTab)
+        # x = GetClients(planilha, sellerTab)
+        # print(x)
     except Exception as e:
         print(e)
 

@@ -1,16 +1,16 @@
 import time
 import pandas as pd
 
-def GetClients(planilha, NomeAba):
-    print("Buscando vendedores...", end = "\r")
+def GetClients(planilha, sellerTab):
+    print("Buscando clientes...", end = "\r")
     try:
-        tabClients = planilha.worksheet(NomeAba)
+        tabClients = planilha.worksheet(sellerTab)
         dataClients = tabClients.get_all_records()
         dfClients = pd.DataFrame(dataClients)
-        print("Vendedores encontrados.")
+        print("Clientes encontrados.")
         return dfClients
     except Exception as e:
         print(e)
         print("Clientes não recebidos, tentando novamente...", end = "\r")
         time.sleep(3)
-        GetClients(planilha, NomeAba)
+        GetClients(planilha, sellerTab)
