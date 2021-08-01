@@ -1,5 +1,5 @@
 from getmac import get_mac_address as gma
-from utils.hourLogin import HourLogin
+from hourLogin import HourLogin
 
 def SetMac(macAddress, gc):
     tabSellers = gc.open(
