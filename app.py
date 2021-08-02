@@ -1,22 +1,30 @@
 print("========================== RP Bot ==========================")
-
+print ("Carregando 1%", end = "\r")
 versionAtual = '1.1.9'
 
 import os
+print ("Carregando 10%", end = "\r")
 from selenium.webdriver.common.keys import Keys
+print ("Carregando 25%", end = "\r")
 from selenium import webdriver
+print ("Carregando 32%", end = "\r")
 from getmac import get_mac_address as gma
+print ("Carregando 47%", end = "\r")
 from google.oauth2 import service_account
+print ("Carregando 53%", end = "\r")
 import gspread
+print ("Carregando 68%", end = "\r")
 import time
+print ("Carregando 73%", end = "\r")
 import pandas as pd
+print ("Carregando 80%", end = "\r")
 import pyautogui
+print ("Carregando 95%", end = "\r")
 import pyimgur
 from datetime import datetime
 
-input("Para a inicialização do bot todas as janelas do chrome serão finalizadas. Pressione ENTER para prosseguir.")
-
-os.system("taskkill /im chrome.exe")
+# input("Para a inicialização do bot todas as janelas do chrome serão finalizadas. Pressione ENTER para prosseguir.")
+# os.system("taskkill /im chrome.exe")
 
 location = os.getcwd()
 print(location)
@@ -72,7 +80,7 @@ def uploadImageError(driver, driver2, e):
         pass
 
 def login():
-    print("Logando no banco de dados")
+    # print("Logando no banco de dados", end = "\r")
     try:
         credentials = service_account.Credentials.from_service_account_file(
             json_file)
@@ -80,6 +88,7 @@ def login():
         gc = gspread.authorize(scoped_credentials)
         planilha = gc.open("Solicitação de teste RoyalPlace (Respostas)")
         return planilha, gc
+        print ("Carregando 99%", end = "\r")
     except Exception as e:
         print("Não foi possível logar no banco de dados, tentando novamente!")
         print(e)
