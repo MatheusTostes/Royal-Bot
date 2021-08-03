@@ -14,7 +14,7 @@ scopes = ["https://www.googleapis.com/auth/spreadsheets",
 json_file = pathCredentials
 
 def login():
-    print("Logando no banco de dados")
+    print("Buscando atualizações!")
     try:
         credentials = service_account.Credentials.from_service_account_file(json_file)
         scoped_credentials = credentials.with_scopes(scopes)
@@ -44,18 +44,23 @@ def receberPlanilhas(planilha):
 dfNews = receberPlanilhas(planilha)
 
 try:
+    print("Removendo arquivos de atualizações anteriores.")
     os.remove(location + '\\att.zip')
 except: 
     pass
 
 url = dfNews["News"][0]
 
+print("Baixando atualizações.")
 myfile = requests.get(url)
 
 open(location + '/att.zip', 'wb').write(myfile.content)
 
+print("Descompactando arquivos.")
 import zipfile
 with zipfile.ZipFile(location + '\\att.zip', 'r') as zip_ref:
     zip_ref.extractall(location)
+
+
 
 
